@@ -16,7 +16,7 @@ const Shop = () => {
       dispatch(createNewMsg(`Something went wrong. Try later`));
       console.log(e)
     })
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>

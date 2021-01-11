@@ -18,5 +18,6 @@ const createNewOrder = async (newObject) => {
   return response.data;
 };
 
+const cartService = { getAll, getItem, createNewOrder }
 
-export default { getAll, getItem, createNewOrder }
+export default cartService

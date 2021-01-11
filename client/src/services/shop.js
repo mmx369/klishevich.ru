@@ -18,4 +18,6 @@ const createNewItem = async (newObject) => {
   return response.data;
 };
 
-export default { createNewItem, getAll }
+const shopService = { createNewItem, getAll }
+
+export default shopService

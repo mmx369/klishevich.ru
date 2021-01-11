@@ -6,4 +6,4 @@ const log = async (credentials) => {
   return response.data;
 };
 
-export default { log }
+export default log

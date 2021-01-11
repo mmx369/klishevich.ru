@@ -49,9 +49,12 @@ const Login = ({ user, setUser }) => {
           <TextField value={loginPassword} onChange={handleChangePassword} label="password" type="password" />
         </div>
         <div>
-          <Button variant="contained" color="primary" type="submit">
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit">
             Login
-            </Button>
+          </Button>
         </div>
       </form>
     </div>

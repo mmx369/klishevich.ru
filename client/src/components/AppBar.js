@@ -15,6 +15,8 @@ import { Link, useHistory } from "react-router-dom";
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
 import LoginModal from './LoginModal'
 import { AuthContext } from '../context/AuthContext';
+import { useSelector } from 'react-redux'
+import { MyDrawer } from './Drawer'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -34,11 +36,14 @@ const AppBarUi = ({ userName }) => {
 
   const auth = useContext(AuthContext)
 
-  const [authSwitch, setAuthSwitch] = React.useState({ checked: (userName) ? false : true });
+  const [authSwitch, setAuthSwitch] = useState({ checked: (userName) ? false : true });
   const [showLogin, setShowLogin] = useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [stateLeft, setStateLeft] = React.useState(false);
   const history = useHistory()
   const open = Boolean(anchorEl);
+
+  const cart = useSelector(state => state.cartR) || []
 
   const handleChange = () => {
     if (!authSwitch.checked) {
@@ -72,6 +77,11 @@ const AppBarUi = ({ userName }) => {
     setAnchorEl(null);
   };
 
+  const toggleDrawerOn = () => {
+    console.log('open drawer')
+    setStateLeft(true)
+  }
+
   if (userName === 'maximus') {
     return (
       <div className={classes.root}>
@@ -82,14 +92,22 @@ const AppBarUi = ({ userName }) => {
             label={userName ? `${userName} logged in` : 'Login'}
           />
         </FormGroup>
-
+        <MyDrawer stateLeft={stateLeft} setStateLeft={setStateLeft} userName={userName} />
         <AppBar position="static">
           <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <IconButton
+              onClick={toggleDrawerOn}
+              edge="start"
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="menu">
               <MenuIcon />
             </IconButton>
             <Button color="inherit" component={Link} to="/">
               Home
+          </Button>
+            <Button color="inherit" component={Link} to="/about">
+              About
           </Button>
             <Button color="inherit" component={Link} to="/shop">
               Shop
@@ -105,7 +123,7 @@ const AppBarUi = ({ userName }) => {
               add new blog
                 </Button>
 
-            {window.localStorage.getItem('cart') && (
+            {!!cart.length && (
               <div>
                 <IconButton
                   color='inherit'
@@ -115,6 +133,7 @@ const AppBarUi = ({ userName }) => {
                 </IconButton>
               </div>
             )}
+
             <div>
               <IconButton
                 aria-label="account of current user"
@@ -158,10 +177,15 @@ const AppBarUi = ({ userName }) => {
           label={userName ? `${userName} logged in` : 'Login'}
         />
       </FormGroup>
-
+      <MyDrawer stateLeft={stateLeft} setStateLeft={setStateLeft} userName={userName} />
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            onClick={toggleDrawerOn}
+            color="inherit"
+            aria-label="menu">
             <MenuIcon />
           </IconButton>
           <Button color="inherit" component={Link} to="/">

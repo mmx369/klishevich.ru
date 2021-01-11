@@ -40,7 +40,7 @@ const Blog = ({ blog }) => {
 
   return (
     <div style={blogStyle}>
-      <strong>{blog.title}</strong>&nbsp;author: {blog.author}&nbsp;{blog.date.toString()}
+      <strong>{blog.title}</strong>&nbsp;author: {blog.author}&nbsp;{new Date(blog.date).toLocaleDateString()}
       <p>
         {blog.content}
       </p>

@@ -6,4 +6,4 @@ const createNewUser = async (newObject) => {
   return response.data;
 };
 
-export default { createNewUser }
+export default createNewUser

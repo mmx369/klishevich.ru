@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -27,8 +28,7 @@ const useStyles = makeStyles(theme => ({
 export default function TransitionsModal() {
 
   const auth = useContext(AuthContext)
-
-  console.log('Auth', auth);
+  const history = useHistory()
 
   const classes = useStyles();
 
@@ -48,13 +48,19 @@ export default function TransitionsModal() {
 
   const loginHandler = async () => {
     try {
-      const data = await loginService.log({
+      const data = await loginService({
         ...form
       })
       auth.login(data.token, data.userId, data.name)
       setOpen(false)
     } catch (e) {
     }
+  }
+
+  const registerHandler = (event) => {
+    event.preventDefault()
+    history.push('/signup')
+    setOpen(false)
   }
 
   return (
@@ -77,6 +83,7 @@ export default function TransitionsModal() {
               <TextField
                 onChange={changeHandler}
                 name='name'
+                value={form.name}
                 type='text'
                 label="name" />
             </div>
@@ -84,12 +91,24 @@ export default function TransitionsModal() {
               <TextField
                 onChange={changeHandler}
                 name="password"
+                value={form.password}
                 label="password"
                 type="password" />
             </div>
             <div>
-              <Button variant="contained" color="primary" onClick={loginHandler}>
-                Login
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ marginTop: 10, marginRight: 10 }}
+                onClick={loginHandler}>
+                Sign in
+            </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ marginTop: 10 }}
+                onClick={registerHandler}>
+                Sign up
             </Button>
             </div>
           </div>

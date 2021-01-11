@@ -9,6 +9,8 @@ export const useAuth = () => {
   const [token, setToken] = useState(null)
   const [userId, setUserId] = useState(null)
   const [userName, setUserName] = useState(null)
+  const [ready, setReady] = useState(false)
+
 
   console.log('token', token);
   console.log('userId', userId);
@@ -35,10 +37,11 @@ export const useAuth = () => {
     if (data && data.token) {
       login(data.token, data.userId, data.userName)
     }
+    setReady(true)
   }, [login])
 
 
 
 
-  return { login, logout, token, userId, userName }
+  return { login, logout, token, userId, userName, ready }
 }
