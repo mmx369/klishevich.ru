@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect, Route, Switch } from 'react-router-dom'
-import About from './components/About'
+import About from './pages/About'
 import AddNewBlog from './components/AddNewBlog'
 import AddNewItem from './components/AddNewItem'
 import BlogList from './components/BlogList'
@@ -9,7 +9,7 @@ import CheckOut from './components/CheckOut'
 import Home from './components/Home'
 import Shop from './components/Shop'
 import SignUp from './components/SignUp'
-import Work from './components/Work'
+import Work from './pages/Work'
 import LoginModal from './components/LoginModal'
 
 export const useRoutes = () => {

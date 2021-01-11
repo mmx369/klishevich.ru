@@ -1,19 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useDispatch } from "react-redux";
+import { AuthContext } from "../context/AuthContext";
 import { deleteBlog, addLike, addDislike } from '../reducers/blogReducer'
-
+import ThumbUpIcon from '@material-ui/icons/ThumbUp';
+import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 
 const Blog = ({ blog }) => {
 
-  const [isTester, setIsTester] = useState(false)
+  const auth = useContext(AuthContext)
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem("loggedUser");
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON);
-      setIsTester(user.name === 'tester')
-    }
-  }, [isTester]);
+  console.log(11111, auth);
+  // const [isTester, setIsTester] = useState(false)
+
+  // useEffect(() => {
+  //   const loggedUserJSON = window.localStorage.getItem("loggedUser");
+  //   if (loggedUserJSON) {
+  //     const user = JSON.parse(loggedUserJSON);
+  //     setIsTester(user.name === 'tester')
+  //   }
+  // }, [isTester]);
 
   const dispatch = useDispatch()
 
@@ -49,7 +54,7 @@ const Blog = ({ blog }) => {
       <button onClick={() => handleDislike(blog.id)}>dislike</button>
 
 
-      {isTester ? <button onClick={() => handleDelete(blog.id)}>delete blog</button> : null}
+      {auth.userName === 'maximus' ? <button onClick={() => handleDelete(blog.id)}>delete blog</button> : null}
 
     </div>
   );

@@ -9,13 +9,13 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Button from '@material-ui/core/Button'
-import { Link, useHistory } from "react-router-dom";
+import Typography from '@material-ui/core/Typography';
 import ShoppingCartRoundedIcon from '@material-ui/icons/ShoppingCartRounded';
+import Menu from '@material-ui/core/Menu';
+import { useSelector } from 'react-redux'
+import { useHistory } from "react-router-dom";
 import LoginModal from './LoginModal'
 import { AuthContext } from '../context/AuthContext';
-import { useSelector } from 'react-redux'
 import { MyDrawer } from './Drawer'
 
 const useStyles = makeStyles(theme => ({
@@ -36,7 +36,6 @@ const AppBarUi = ({ userName }) => {
 
   const auth = useContext(AuthContext)
 
-  const [authSwitch, setAuthSwitch] = useState({ checked: (userName) ? false : true });
   const [showLogin, setShowLogin] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null);
   const [stateLeft, setStateLeft] = React.useState(false);
@@ -46,22 +45,15 @@ const AppBarUi = ({ userName }) => {
   const cart = useSelector(state => state.cartR) || []
 
   const handleChange = () => {
-    if (!authSwitch.checked) {
-      console.log('checked');
+    if (!auth.isAuthenticated) {
       setShowLogin(true)
-      setAuthSwitch({ checked: true })
     } else {
-      console.log('unchecked');
       auth.logout()
-      setAuthSwitch({ checked: false })
-      setShowLogin(false)
     }
   };
 
   const handleSignOut = () => {
     auth.logout()
-    setAuthSwitch({ checked: false })
-    setShowLogin(false)
     setAnchorEl(null)
   }
 
@@ -78,128 +70,41 @@ const AppBarUi = ({ userName }) => {
   };
 
   const toggleDrawerOn = () => {
-    console.log('open drawer')
     setStateLeft(true)
-  }
-
-  if (userName === 'maximus') {
-    return (
-      <div className={classes.root}>
-        {showLogin && <LoginModal user={userName} />}
-        <FormGroup>
-          <FormControlLabel
-            control={<Switch checked={authSwitch.checked} onChange={handleChange} aria-label="login switch" />}
-            label={userName ? `${userName} logged in` : 'Login'}
-          />
-        </FormGroup>
-        <MyDrawer stateLeft={stateLeft} setStateLeft={setStateLeft} userName={userName} />
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              onClick={toggleDrawerOn}
-              edge="start"
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="menu">
-              <MenuIcon />
-            </IconButton>
-            <Button color="inherit" component={Link} to="/">
-              Home
-          </Button>
-            <Button color="inherit" component={Link} to="/about">
-              About
-          </Button>
-            <Button color="inherit" component={Link} to="/shop">
-              Shop
-            </Button>
-
-            <Button color="inherit" component={Link} to="/blog">
-              Blog
-          </Button>
-            < Button color="inherit" component={Link} to="/_addingItem">
-              add item to shop
-                </Button>
-            < Button color="inherit" component={Link} to="/_addingNewBlog">
-              add new blog
-                </Button>
-
-            {!!cart.length && (
-              <div>
-                <IconButton
-                  color='inherit'
-                  onClick={handleMenuCart}
-                >
-                  <ShoppingCartRoundedIcon />
-                </IconButton>
-              </div>
-            )}
-
-            <div>
-              <IconButton
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={open}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
-              </Menu>
-            </div>
-          </Toolbar>
-        </AppBar>
-      </div>
-    )
   }
 
   return (
     <div className={classes.root}>
       {showLogin && <LoginModal user={userName} />}
+
       <FormGroup>
         <FormControlLabel
-          control={<Switch checked={authSwitch.checked} onChange={handleChange} aria-label="login switch" />}
+          control={<Switch checked={auth.isAuthenticated} onChange={handleChange} aria-label="login switch" />}
           label={userName ? `${userName} logged in` : 'Login'}
         />
       </FormGroup>
-      <MyDrawer stateLeft={stateLeft} setStateLeft={setStateLeft} userName={userName} />
+
+      <MyDrawer
+        stateLeft={stateLeft}
+        setStateLeft={setStateLeft}
+        userName={userName} />
+
       <AppBar position="static">
         <Toolbar>
           <IconButton
+            onClick={toggleDrawerOn}
             edge="start"
             className={classes.menuButton}
-            onClick={toggleDrawerOn}
             color="inherit"
             aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Button color="inherit" component={Link} to="/">
-            Home
-          </Button>
-          <Button color="inherit" component={Link} to="/shop">
-            Shop
-            </Button>
 
-          <Button color="inherit" component={Link} to="/blog">
-            Blog
-          </Button>
+          <Typography variant="h6" className={classes.title}>
+            ~ Max Klishevich ~
+          </Typography>
 
-          {window.localStorage.getItem('cart') && (
+          {!!cart.length && (
             <div>
               <IconButton
                 color='inherit'
@@ -209,6 +114,7 @@ const AppBarUi = ({ userName }) => {
               </IconButton>
             </div>
           )}
+
           <div>
             <IconButton
               aria-label="account of current user"
@@ -219,6 +125,7 @@ const AppBarUi = ({ userName }) => {
             >
               <AccountCircle />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorEl}

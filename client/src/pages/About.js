@@ -1,12 +1,10 @@
 import React from "react";
-import { Loader } from './Loader'
 
 const About = () => {
 
   return (
     <div>
-      <Loader />
-      <h2>About</h2>
+      <h2>Who am I ?</h2>
       <p>
         Lorem Ipsum is simply dummy text of the printing and typesetting industry.
         Lorem Ipsum has been the industry's standard dummy text ever since the

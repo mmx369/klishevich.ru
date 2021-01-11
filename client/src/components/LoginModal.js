@@ -77,8 +77,10 @@ export default function TransitionsModal() {
           timeout: 500,
         }}
       >
+
         <Fade in={open}>
           <div className={classes.paper}>
+            <h3>Authorization</h3>
             <div>
               <TextField
                 onChange={changeHandler}

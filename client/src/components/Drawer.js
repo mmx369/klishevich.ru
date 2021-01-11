@@ -13,6 +13,7 @@ import Shop from '@material-ui/icons/Shop';
 import CommentIcon from '@material-ui/icons/Comment';
 import { Link } from 'react-router-dom';
 import AcUnitIcon from '@material-ui/icons/AcUnit';
+import WorkIcon from '@material-ui/icons/Work';
 
 const useStyles = makeStyles({
   list: {
@@ -58,13 +59,14 @@ export const MyDrawer = ({ stateLeft, setStateLeft, userName }) => {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Home', 'About', 'Shop', 'Blog'].map((text, index) => (
+        {['Home', 'About', 'Shop', 'Blog', 'Work'].map((text, index) => (
           <ListItem button key={text} component={Link} to={`/${text.toLowerCase()}`}>
             {<ListItemIcon>
               {index === 0 ? <HomeIcon />
                 : index === 1 ? <InfoIcon />
                   : index === 2 ? <Shop />
-                    : <CommentIcon />}
+                    : index === 3 ? <CommentIcon />
+                      : <WorkIcon />}
             </ListItemIcon>}
             <ListItemText primary={text} />
           </ListItem>
