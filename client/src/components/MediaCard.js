@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux'
 import SimpleModal from './Modal'
 import Notification from './Notification';
 import { createNewMsg } from '../reducers/newMsgReducer'
+import { FormHelperText } from '@material-ui/core';
 
 const useStyles = makeStyles({
   root: {

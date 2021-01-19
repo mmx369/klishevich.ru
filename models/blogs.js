@@ -4,7 +4,7 @@ mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 
-const blogSchema = mongoose.Schema({
+const blogSchema = new mongoose.Schema({
   title: String,
   author: String,
   content: String,

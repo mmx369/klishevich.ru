@@ -1,50 +1,63 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useField } from "../hooks/useField";
 import { useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom'
 import { createNewMsg } from "../reducers/newMsgReducer";
 import { addBlog } from "../reducers/blogReducer";
+import { AuthContext } from '../context/AuthContext';
+import Button from '@material-ui/core/Button';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import blogService from '../services/blog'
+import Notification from '../components/Notification'
 
-function AddNewBlog({ author }) {
+function AddNewBlog() {
+
+  const auth = useContext(AuthContext)
+
+  const history = useHistory()
 
   const classes = {
     input: {
-      margin: '1rem',
       marginRight: '1rem',
       marhinLeft: '1rem',
     },
     textarea: {
-      margin: '1rem',
       marginRight: '1rem',
       marhinLeft: '1rem',
     },
   }
 
   const titleInput = useField("title");
+
   const dispatch = useDispatch();
 
   const handleAddNewBlog = (event) => {
     event.preventDefault();
     const content = document.getElementById('textarea').value
+
     const blogObject = {
       title: titleInput.value,
-      author,
+      author: auth.userName,
       content,
     };
-    console.log(1111, blogObject);
+    console.log('Blogobject', blogObject);
+
+    blogService.setToken(auth.token)
 
     dispatch(addBlog(blogObject));
     dispatch(createNewMsg(`A new blog ${titleInput.value} added`));
     setTimeout(() => {
-      dispatch(createNewMsg(null));
-    }, 3000);
+      history.push('/blog')
+    }, 5000);
   };
 
   return (
     <div>
-      <h2>create new blog</h2>
+      <Notification />
+      <h2>Create new blog</h2>
       <form onSubmit={handleAddNewBlog}>
         <div>
-          title
+          <strong>Title</strong><br />
           <input
             style={classes.input}
             type={titleInput.type}
@@ -54,14 +67,19 @@ function AddNewBlog({ author }) {
           />
         </div>
         <div>
-          content
-          <textarea style={classes.textarea} id='textarea' cols='50' row='400'>
-          </textarea>
+          <strong>Content</strong><br />
+          <TextareaAutosize
+            rowsMin={6}
+            id='textarea'
+            placeholder='Place your text here'
+          />
         </div>
-        <button
-          type="submit"          >
+        <Button
+          type='submit'
+          variant="outlined"
+          color="primary">
           add new blog
-      </button>
+        </Button>
       </form>
     </div>
   )

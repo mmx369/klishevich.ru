@@ -10,6 +10,8 @@ const BlogList = () => {
 
   const blogs = useSelector((state) => state.blogR);
 
+  blogs.sort((a, b) => new Date(b.date) - new Date(a.date))
+
   useEffect(() => {
     dispatch(initializeBlogs());
   }, [dispatch])

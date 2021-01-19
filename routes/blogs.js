@@ -4,16 +4,14 @@ const User = require("../models/users");
 const jwt = require("jsonwebtoken");
 
 blogsRouter.get("/", async (request, response) => {
-  console.log(111111, 'get');
-  const blogs = await Blog.find({});
-  console.log(222222, blogs);
+  // const blogs = await Blog.find({}).skip(1).limit(5)
+  const blogs = await Blog.find({})
   response.json(blogs.map((blog) => blog.toJSON()));
 });
 
 blogsRouter.post("/", async (request, response) => {
   const body = request.body;
   const decodedToken = jwt.verify(response.token, process.env.SECRET);
-
   if (!response.token || !decodedToken.id) {
     return response.status(401).json({ error: "token missing or invalid" });
   }
@@ -36,17 +34,19 @@ blogsRouter.post("/", async (request, response) => {
 
 blogsRouter.put("/:id", async (request, response) => {
   const likes = request.body.likes;
-  await Blog.findByIdAndUpdate(request.params.id, {
+  const updatedObject = await Blog.findByIdAndUpdate(request.params.id, {
     likes: likes,
-  })
+  }, { new: true })
+  response.status(200).json(updatedObject.toJSON());
 })
 
 blogsRouter.delete("/:id", async (request, response) => {
   try {
     await Blog.findByIdAndRemove(request.params.id);
   } catch (e) {
-    console.log(e);
+    console.log('Error: ', e);
   }
+  response.status(200).json({ message: 'Blog succesfully deleted' });
 });
 
 module.exports = blogsRouter;
