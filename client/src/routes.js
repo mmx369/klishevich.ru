@@ -4,7 +4,7 @@ import About from './pages/About'
 import AddNewBlog from './components/AddNewBlog'
 import AddNewItem from './components/AddNewItem'
 import BlogList from './components/BlogList'
-import CartTest from './components/CartTest'
+import { Cart } from './components/Cart'
 import CheckOut from './components/CheckOut'
 import Home from './components/Home'
 import Shop from './components/Shop'
@@ -29,7 +29,7 @@ export const useRoutes = () => {
         <BlogList />
       </Route>
       <Route path="/cart" exact >
-        <CartTest />
+        <Cart />
       </Route>
       <Route path="/signup" exact >
         <SignUp />

@@ -1,7 +1,7 @@
 import { NEW_MSG } from './types'
 
 
-const newMsgReducer = (state = null, action) => {
+const newMsgReducer = (state = [], action) => {
   switch (action.type) {
 
     case NEW_MSG: {
@@ -12,8 +12,10 @@ const newMsgReducer = (state = null, action) => {
   }
 };
 
+
 export const createNewMsg = (msg) => {
-  return { type: NEW_MSG, data: msg };
+  console.log(1111, msg);
+  return { type: NEW_MSG, data: msg }
 };
 
 export default newMsgReducer

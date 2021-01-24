@@ -1,33 +1,27 @@
 import React, { useContext } from 'react'
-import { useField } from "../hooks/useField";
-import { useDispatch } from "react-redux";
+import { useField } from '../hooks/useField';
+import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom'
-import { createNewMsg } from "../reducers/newMsgReducer";
-import { addBlog } from "../reducers/blogReducer";
-import { AuthContext } from '../context/AuthContext';
-import Button from '@material-ui/core/Button';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import { createNewMsg } from '../reducers/newMsgReducer';
+import { addBlog } from '../reducers/blogReducer'
+import { AuthContext } from '../context/AuthContext'
+import Button from '@material-ui/core/Button'
+import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import blogService from '../services/blog'
 import Notification from '../components/Notification'
+import { useTranslation } from 'react-i18next'
+import useStyles from '../style'
 
 function AddNewBlog() {
 
   const auth = useContext(AuthContext)
+  const { t } = useTranslation()
+
+  const classes = useStyles()
 
   const history = useHistory()
 
-  const classes = {
-    input: {
-      marginRight: '1rem',
-      marhinLeft: '1rem',
-    },
-    textarea: {
-      marginRight: '1rem',
-      marhinLeft: '1rem',
-    },
-  }
-
-  const titleInput = useField("title");
+  const titleInput = useField('title');
 
   const dispatch = useDispatch();
 
@@ -40,26 +34,30 @@ function AddNewBlog() {
       author: auth.userName,
       content,
     };
-    console.log('Blogobject', blogObject);
 
     blogService.setToken(auth.token)
 
     dispatch(addBlog(blogObject));
-    dispatch(createNewMsg(`A new blog ${titleInput.value} added`));
+    dispatch(createNewMsg({ message: `${t('A_new_blog')} ${titleInput.value} ${t('has_been_added')}`, msgType: 'success' }))
+
+    setTimeout(() => {
+      dispatch(createNewMsg([]))
+    }, 3000);
+
     setTimeout(() => {
       history.push('/blog')
-    }, 5000);
+    }, 4000);
   };
 
   return (
-    <div>
+    <div className={classes.container}>
       <Notification />
-      <h2>Create new blog</h2>
+      <h2>{t('add_new_blog')}</h2>
       <form onSubmit={handleAddNewBlog}>
         <div>
-          <strong>Title</strong><br />
+          <strong>{t('title')}</strong><br />
           <input
-            style={classes.input}
+            className={classes.input}
             type={titleInput.type}
             value={titleInput.value}
             name={titleInput.name}
@@ -67,18 +65,20 @@ function AddNewBlog() {
           />
         </div>
         <div>
-          <strong>Content</strong><br />
+          <strong>{t('content')}</strong><br />
           <TextareaAutosize
             rowsMin={6}
             id='textarea'
-            placeholder='Place your text here'
+            placeholder={t('place_your_text_here')}
           />
         </div>
         <Button
+          className={classes.buttonMain}
           type='submit'
-          variant="outlined"
-          color="primary">
-          add new blog
+          variant='outlined'
+          color='primary'
+        >
+          {t('add_new_blog')}
         </Button>
       </form>
     </div>

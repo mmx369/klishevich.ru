@@ -1,15 +1,17 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Modal from '@material-ui/core/Modal'
+import Button from '@material-ui/core/Button'
+import { useTranslation } from 'react-i18next'
+
 
 function rand() {
-  return Math.round(Math.random() * 20) - 10;
+  return Math.round(Math.random() * 20) - 10
 }
 
 function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
+  const top = 50 + rand()
+  const left = 50 + rand()
 
   return {
     top: `${top}%`,
@@ -30,19 +32,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SimpleModal({ open, setOpen, image }) {
-  const classes = useStyles();
-  const [modalStyle] = React.useState(getModalStyle);
+export function SimpleModal({ open, setOpen, image }) {
+  const classes = useStyles()
+  const [modalStyle] = React.useState(getModalStyle)
+  const { t } = useTranslation()
 
   const handleClose = () => {
-    setOpen(false);
+    setOpen(false)
   };
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <img src={image} alt=''></img>
-      <Button size="small" color="primary" type="button" onClick={handleClose}>
-        Close
+      <Button size='small' color='primary' type='button' onClick={handleClose}>
+        {t('close')}
       </Button>
     </div>
   );
@@ -52,8 +55,8 @@ export default function SimpleModal({ open, setOpen, image }) {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby='simple-modal-title'
+        aria-describedby='simple-modal-description'
       >
         {body}
       </Modal>

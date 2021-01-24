@@ -1,8 +1,8 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React from "react"
+import { useSelector } from "react-redux"
 import Snackbar from '@material-ui/core/Snackbar'
 import { Alert } from '@material-ui/lab'
-import Slide from '@material-ui/core/Slide';
+import Slide from '@material-ui/core/Slide'
 
 const Notification = () => {
 
@@ -10,7 +10,7 @@ const Notification = () => {
     open: true,
     vertical: 'top',
     horizontal: 'center',
-  });
+  })
 
   const TransitionLeft = (props) => {
     return <Slide {...props} direction="right" />;
@@ -18,33 +18,36 @@ const Notification = () => {
 
   const { vertical, horizontal, open } = state;
 
-  const message = useSelector((state) => state.msgR);
+  const message = useSelector((state) => state.msgR)
 
   const handleClose = () => {
     setState({ ...state, open: false });
   };
 
-  if (message === null) {
-    return null;
+  if (!message.message) {
+    return null
   }
 
-  if (message === "Item is sold out" || message === "Something went wrong. Try later") {
-    return <div>
+  if (message.msgType === 'success') {
+    return (<div>
       <Snackbar
         anchorOrigin={{ vertical, horizontal }}
         open={open}
         autoHideDuration={5000}
         TransitionComponent={TransitionLeft}
         onClose={handleClose}
-        key={vertical + horizontal}>
+        key={vertical + horizontal}
+      >
         <Alert
-          severity="error"
+          severity="success"
           onClose={handleClose}>
-          <strong>{message}</strong>
+          <strong>{message.message}</strong>
         </Alert>
       </Snackbar>
-    </div>;
+    </div >
+    )
   }
+
   return (<div>
     <Snackbar
       anchorOrigin={{ vertical, horizontal }}
@@ -52,16 +55,14 @@ const Notification = () => {
       autoHideDuration={5000}
       TransitionComponent={TransitionLeft}
       onClose={handleClose}
-      key={vertical + horizontal}
-    >
+      key={vertical + horizontal}>
       <Alert
-        severity="success"
+        severity="error"
         onClose={handleClose}>
-        <strong>{message}</strong>
+        <strong>{message.message}</strong>
       </Alert>
     </Snackbar>
-  </div >
-  )
+  </div>)
 };
 
 export default Notification

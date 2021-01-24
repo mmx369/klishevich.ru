@@ -1,9 +1,11 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import React, { useState, useEffect } from 'react'
+import clsx from 'clsx'
+import { makeStyles } from '@material-ui/core/styles'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControl from '@material-ui/core/FormControl'
+import Select from '@material-ui/core/Select'
+import { useTranslation } from 'react-i18next'
+
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -35,7 +37,7 @@ const MenuProps = {
   },
 };
 
-const countries = [
+const countriesEng = [
   'Afghanistan',
   'Albania',
   'Algeria',
@@ -234,8 +236,21 @@ const countries = [
   'Zimbabwe',
 ];
 
+const countriesRus = ["Россия", "Австралия", "Австрия", "Азербайджан", "Албания", "Алжир", "Ангола", "Андорра", "Аргентина", "Армения", "Афганистан", "Бангладеш", "Барбадос", "Бахрейн", "Беларусь", "Белиз", "Бельгия", "Бенин", "Болгария", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Буркина - Фасо", "Бурунди", "Бутан", "Великобритания", "Венгрия", "Венесуэла", "Восточный Тимор", "Вьетнам", "Габон", "Гаити", "Гайана", "Гамбия", "Гана", "Гваделупа", "Гватемала", "Гвинея", "Гвинея - Бисау", "Германия", "Гибралтар", "Гондурас", "Гонконг", "Греция", "Грузия", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Египет", "Замбия", "Западная Сахара", "Зимбабве", "Израиль", "Индия", "Индонезия", "Иордания", "Ирак", "Иран", "Ирландия", "Исландия", "Испания", "Италия", "Йемен", "Казахстан", "Камбоджа", "Камерун", "Канада", "Катар", "Кения", "Кипр", "Киргизия", "Кирибати", "Китай", "КНДР", "Колумбия", "Конго", "Коста - Рика", "Кот - д’Ивуар", "Куба", "Кувейт", "Лаос", "Латвия", "Лесото", "Либерия", "Ливан", "Ливия", "Литва", "Лихтенштейн", "Люксембург", "Маврикий", "Мадагаскар", "Макао", "Малави", "Малайзия", "Мали", "Мальдивы", "Мальта", "Марокко", "Мексика", "Мозамбик", "Молдова", "Монако", "Монголия", "Мьянма", "Намибия", "Непал", "Нигер", "Нигерия", "Нидерланды", "Никарагуа", "Новая Зеландия", "Норвегия", "ОАЭ", "Оман", "Пакистан", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Польша", "Португалия", "Пуэрто - Рико", "Республика Корея", "Руанда", "Румыния", "Сальвадор", "Саудовская Аравия", "Сенегал", "Сербия", "Сингапур", "Сирия", "Словакия", "Словения", "Соединенные Штаты Америки", "Сомали", "Судан", "Суринам", "Сьерра - Леоне", "Таджикистан", "Таиланд", "Тайвань", "Танзания", "Тринидад и Тобаго", "Тунис", "Туркменистан", "Турция", "Уганда", "Узбекистан", "Украина", "Уругвай", "Фиджи", "Филиппины", "Финляндия", "Франция", "Хорватия", "Центрально - Африканская Республика", "Чад", "Черногория", "Чехия", "Чили", "Швейцария", "Швеция", "Шри - Ланка", "Эквадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эфиопия", "Южно - Африканская Республика", "Южный Судан", "Ямайка", "Япония"]
+
 export default function CountrySelect({ country, setNewCountry }) {
   const classes = useStyles();
+
+  const { t } = useTranslation()
+  const [countries, setCountries] = useState(countriesEng)
+
+  useEffect(() => {
+    if (localStorage.getItem('i18nextLng') === 'ru') {
+      setCountries(countriesRus)
+    } else {
+      setCountries(countriesEng)
+    }
+  }, [setCountries])
 
   const handleChange = (event) => {
     setNewCountry(event.target.value);
@@ -250,14 +265,14 @@ export default function CountrySelect({ country, setNewCountry }) {
           onChange={handleChange}
           renderValue={(selected) => {
             if (selected.length === 0) {
-              return <em>Select your country</em>;
+              return <em>{t('select_country')}</em>;
             }
             return selected;
           }}
           MenuProps={MenuProps}
         >
           <MenuItem disabled value="">
-            <em>Select your country</em>
+            <em>{t('select_country')}</em>
           </MenuItem>
           {countries.map((el) => (
             <MenuItem key={el} value={el}>

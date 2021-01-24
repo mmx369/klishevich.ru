@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import {
-  TextField,
-  Button,
-} from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import shopServices from '../services/shop'
+import { useTranslation } from "react-i18next";
+
 
 const AddNewItem = () => {
 
@@ -11,6 +10,8 @@ const AddNewItem = () => {
   const [newItemAmount, setNewItemAmount] = useState("");
   const [newItemPrice, setNewItemPrice] = useState("");
   const [newItemPath, setNewItemPath] = useState("");
+
+  const { t } = useTranslation()
 
 
   const handleNewItemName = (event) => {
@@ -51,27 +52,27 @@ const AddNewItem = () => {
 
   return (
     <div>
-      <h2>Sign Up</h2>
+      <h2>{t('add_item_to_shop')}</h2>
       <form onSubmit={AddNewItem}>
 
         <div>
-          <TextField value={newItemName} onChange={handleNewItemName} label="enter new item name" />
+          <TextField value={newItemName} onChange={handleNewItemName} label={t('new_item_name')} />
         </div>
 
         <div>
-          <TextField value={newItemAmount} onChange={handleNewItemAmount} label="amount of items" />
+          <TextField value={newItemAmount} onChange={handleNewItemAmount} label={t('amount_of_items')} />
         </div>
         <div>
-          <TextField value={newItemPrice} onChange={handleNewItemPrice} label="price" />
+          <TextField value={newItemPrice} onChange={handleNewItemPrice} label={t('price')} />
         </div>
         <div>
-          <TextField value={newItemPath} onChange={handleNewItemPath} label="picture's name" />
+          <TextField value={newItemPath} onChange={handleNewItemPath} label={t('image_name')} />
         </div>
 
         <div>
-          <Button variant="contained" color="primary" type="submit">
-            Add new item
-            </Button>
+          <Button variant="contained" color="primary" type="submit" style={{ marginTop: '10px' }}>
+            {t('add_item_to_shop')}
+          </Button>
         </div>
       </form>
     </div>

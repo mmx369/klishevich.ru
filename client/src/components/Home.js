@@ -1,11 +1,10 @@
-import React from "react";
+import React from "react"
 import GridList from './GridList'
-
 
 const Home = () => {
 
   return (
-    <div>
+    <div className='container'>
       <GridList />
     </div>
   )
