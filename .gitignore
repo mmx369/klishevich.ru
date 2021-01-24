@@ -5,3 +5,5 @@ build
 client/build
 .env
 client/node_modules
+.DS_Store
+uploads/

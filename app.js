@@ -5,22 +5,22 @@ const cors = require("cors");
 const middleware = require("./utils/middleware");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
-const formData = require('express-form-data')
-const usersRouter = require('./routes/users')
-const loginRouter = require('./routes/login')
-const goodsRouter = require('./routes/goods')
-const imgRouter = require('./routes/img')
-const orderRouter = require('./routes/orders')
-const blogsRouter = require('./routes/blogs')
-const imagesRouter = require('./routes/images');
+const formData = require("express-form-data");
+const usersRouter = require("./routes/users");
+const loginRouter = require("./routes/login");
+const goodsRouter = require("./routes/goods");
+const imgRouter = require("./routes/img");
+const orderRouter = require("./routes/orders");
+const blogsRouter = require("./routes/blogs");
+const imagesRouter = require("./routes/images");
 // const imageUploadRouter = require("./routes/uploads");
-const path = require('path')
-const crypto = require('crypto')
-const multer = require('multer')
-const bodyParser = require('body-parser')
-const GridFsStorage = require('multer-gridfs-storage')
-const Grid = require('gridfs-stream')
-const fs = require('fs')
+const path = require("path");
+const crypto = require("crypto");
+const multer = require("multer");
+const bodyParser = require("body-parser");
+// const GridFsStorage = require('multer-gridfs-storage')
+// const Grid = require('gridfs-stream')
+const fs = require("fs");
 
 logger.info("connecting to MongoDB");
 
@@ -28,7 +28,7 @@ mongoose
   .connect(config.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useCreateIndex: true,
   })
   .then(() => {
     logger.info("connected to MongoDB");
@@ -38,21 +38,21 @@ mongoose
   });
 
 app.use(cors());
-app.use(express.static('build'))
-app.use(express.json())
-app.use(bodyParser.json())
-app.use(formData.parse())
+app.use(express.static("build"));
+app.use(express.json());
+app.use(bodyParser.json());
+// app.use(formData.parse())
 
-app.use(middleware.requestLogger)
-app.use(middleware.tokenExtractor)
+app.use(middleware.requestLogger);
+app.use(middleware.tokenExtractor);
 
-app.use("/api/login", loginRouter)
-app.use("/api/users", usersRouter)
-app.use("/api/goods", goodsRouter)
-app.use("/api/img", imgRouter)
-app.use("/api/orders", orderRouter)
-app.use("/api/blogs", blogsRouter)
-app.use("/api/images", imagesRouter)
+app.use("/api/login", loginRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/goods", goodsRouter);
+app.use("/api/img", imgRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/blogs", blogsRouter);
+app.use("/api/images", imagesRouter);
 
 // app.use('/api/uploads', imageUploadRouter)
 
@@ -69,44 +69,55 @@ app.use("/api/images", imagesRouter)
 const imageSchema = new mongoose.Schema({
   name: String,
   desc: String,
-  img:
-  {
+  img: {
     data: Buffer,
-    contentType: String
-  }
+    contentType: String,
+  },
 });
+
+const Image2 = mongoose.model("Image2", imageSchema);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads')
+    cb(null, "uploads");
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now())
-  }
+    console.log("test 123", file);
+    // cb(null, file.fieldname + '-' + Date.now());
+    cb(null, file.originalname);
+  },
 });
 
-const upload = multer({ storage: storage });
-
-app.post('/api/uploads', upload.single('image'), (req, res, next) => {
-  console.log('POST !!!');
-  console.log(1111, req.file.name);
-  const obj = {
-    name: 'file1',
-    desc: 'disc1',
-    img: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.name)),
-      contentType: 'image/png'
-    }
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    console.log("wrong file extension");
+    cb(null, false);
   }
-  imgModel.create(obj, (err, item) => {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      // item.save();
-      res.redirect('/');
-    }
-  });
+};
+
+const upload = multer({ storage: storage, fileFilter });
+
+app.post("/api/uploads", upload.single("image"), async (req, res, next) => {
+  console.log("POST !!!", req);
+  try {
+    const { filename, path: filepath, mimetype } = req.file;
+    console.log(filename, filepath, mimetype);
+    const image = new Image2;
+    image.name = filename;
+    image.desc = "image";
+    image.img.data = fs.readFileSync(path.join(__dirname, filepath));
+    image.img.contentType = mimetype;
+    const result = await image.save();
+    console.log(111, result);
+
+    return res.status(201).json({
+      message: "File uploded successfully",
+    });
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 // let storage = new GridFsStorage({
@@ -131,9 +142,8 @@ app.post('/api/uploads', upload.single('image'), (req, res, next) => {
 
 // const upload = multer({ storage })
 
-
 app.get("/api/uploads", (req, res) => {
-  return res.send('ping ping');
+  return res.send("ping ping");
 });
 
 // app.post("/api/uploads", upload.single("image"), (req, res) => {
@@ -146,12 +156,7 @@ app.get("/api/uploads", (req, res) => {
 //   // res.status(201).send()
 // })
 
-
-app.use(middleware.unknownEndpoint)
-app.use(middleware.errorHandler)
-
-
-
-
+app.use(middleware.unknownEndpoint);
+app.use(middleware.errorHandler);
 
 module.exports = app;
