@@ -5,3 +5,10 @@ build
 client/build
 .env
 client/node_modules
+.DS_Store
+uploads/
+client/components/img
+client/components/tileDate/img
+img_shop
+/img_shop
+

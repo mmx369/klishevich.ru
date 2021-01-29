@@ -1,6 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import i18next from 'i18next'
+import { useDispatch } from "react-redux"
+import { changeLanguage } from '../reducers/langReducer'
 
 import ArrowDropDown from '@material-ui/icons/ArrowDropDown'
 import Button from '@material-ui/core/Button'
@@ -17,8 +19,15 @@ const languageMap = {
 const LanguageSelect = () => {
 
   const { t } = useTranslation()
+  const dispatch = useDispatch()
 
   const selected = localStorage.getItem('i18nextLng') || 'en'
+
+  if (selected === 'en') {
+    dispatch(changeLanguage('en'))
+  } else {
+    dispatch(changeLanguage('ru'))
+  }
 
   const [menuAnchor, setMenuAnchor] = React.useState(null)
 

@@ -20,11 +20,11 @@ export default function AdvancedGridList() {
   }
 
   return (
-    <div className={classes.container}>
+    <div>
       <GridList cellHeight={200} spacing={2} className={classes.gridList} cols={2}>
         {tileData.map((tile) => (
-          <GridListTile key={tile.img} cols={tile.featured ? 2 : 1} rows={tile.featured ? 2 : 1}>
-            <img src={tile.img} alt={t(addTranslateToTileData(tile.title))} />
+          < GridListTile key={tile.img} cols={tile.featured ? 2 : 1} rows={tile.featured ? 2 : 1} >
+            <img src={tile.img} alt={t(addTranslateToTileData(tile.title))} />;
             <GridListTileBar
               title={t(addTranslateToTileData(tile.title)) + ' ' + getYearFromTitle(tile.title)}
               titlePosition='top'

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Container } from '@material-ui/core'
 import AppBarUi from './components/AppBar'
 import { useRoutes } from './routes'
 import { useAuth } from './hooks/auth.hook'
@@ -25,9 +24,9 @@ const App = () => {
         token, login, logout, userId, userName, isAuthenticated
       }}>
         <AppBarUi userName={userName} />
-        <Container className={classes.container}>
+        <div className={classes.containerMain} style={{ border: 'dotted' }}>
           {routes}
-        </Container>
+        </div>
         <Footer />
       </AuthContext.Provider>
     </>

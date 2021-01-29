@@ -47,6 +47,8 @@ const AppBarUi = ({ userName }) => {
   const handleSignOut = () => {
     auth.logout()
     setAnchorEl(null)
+    history.push('/');
+    setShowLogin(false)
   }
 
   const handleMenu = event => {

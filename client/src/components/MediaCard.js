@@ -16,8 +16,9 @@ import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
-    margin: 5
+    width: 345,
+    margin: 5,
+    marginBottom: 25,
   },
   media: {
     height: 300,

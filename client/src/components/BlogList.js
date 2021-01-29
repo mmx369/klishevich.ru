@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { initializeBlogs } from '../reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import GridList from '@material-ui/core/GridList'
 import Blog from '../components/Blog'
 import useStyles from '../style'
 
@@ -20,13 +21,15 @@ const BlogList = () => {
 
 
   return (
-    <div className={classes.container}>
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-        />
-      ))}
+    <div className={classes.containerBlog}>
+      <GridList className={classes.gridListShop}>
+        {blogs.map((blog) => (
+          <Blog
+            key={blog.id}
+            blog={blog}
+          />
+        ))}
+      </GridList>
     </div>
   )
 };

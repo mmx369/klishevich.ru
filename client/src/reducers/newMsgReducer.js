@@ -14,7 +14,6 @@ const newMsgReducer = (state = [], action) => {
 
 
 export const createNewMsg = (msg) => {
-  console.log(1111, msg);
   return { type: NEW_MSG, data: msg }
 };
 

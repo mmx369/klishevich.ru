@@ -1,16 +1,56 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
-  container: {
+
+  containerMain: {
     fontFamily: 'Arial, Verdana, sans-serif',
     background: 'linear-gradient(60deg, #2196f3 30%, #FF8E53 90%)',
-    // backgroundColor: '#ccff90',
-    padding: 5,
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
     overflow: 'hidden',
+    margin: 0,
+    padding: 10,
+    justifyContent: 'center',
   },
+
+  container: {
+    marginTop: 10,
+    padding: 5,
+    borderRadius: 40,
+  },
+
+  containerBlog: {
+    padding: 5,
+    marginBottom: 300
+  },
+
+  containerText: {
+    margin: 0,
+    padding: 5,
+    justifyContent: 'space-between',
+    float: 'left',
+    width: '70%',
+    boxSizing: 'border-box',
+    marginBottom: 100
+  },
+
+  divRight: {
+    float: 'right',
+    width: '30%',
+    boxSizing: 'border-box',
+  },
+
+  img: {
+    width: '100%',
+    borderRadius: 15,
+    marginBottom: 35,
+    marginTop: 35,
+    paddingRight: 10
+  },
+
+  typo: {
+    marginTop: 20,
+  },
+
 
   buttonMain: {
     backgroundColor: "#fce4ec",
@@ -51,7 +91,15 @@ const useStyles = makeStyles({
     width: 500,
     paddingTop: 5,
     transform: 'translateZ(0)',
+    borderRadius: '20px'
   },
+
+  gridListShop: {
+    justifyContent: 'center',
+    alignContent: 'center'
+  },
+
+
   titleBar: {
     background:
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
@@ -63,15 +111,18 @@ const useStyles = makeStyles({
 
   footer: {
     marginTop: '1rem',
+    display: 'flex',
     padding: '1rem',
     background: 'linear-gradient(60deg, #2196f3 30%, #FF8E53 90%)',
     position: 'fixed',
     bottom: 0,
     left: 0,
     height: '1rem',
-    width: '100%'
+    width: '100%',
+    justifyContent: 'center'
+  },
+  a: {
+    textDecoration: 'none'
   }
-
-});
-
+})
 export default useStyles

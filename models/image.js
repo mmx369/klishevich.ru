@@ -5,10 +5,15 @@ mongoose.set("useFindAndModify", false);
 mongoose.set("useCreateIndex", true);
 
 const imageSchema = new mongoose.Schema({
-  img: { data: Buffer, contentType: String }
+  name: String,
+  desc: String,
+  img:
+  {
+    data: Buffer,
+    contentType: String
+  }
 });
 
+const Image2 = mongoose.model('Image2', imageSchema);
 
-const Image = mongoose.model("Image", imageSchema);
-
-module.exports = Image;
+module.exports = Image2;

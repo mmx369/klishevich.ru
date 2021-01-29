@@ -10,7 +10,7 @@ const resources = {
   en: {
     translation: {
       "select_language": "Select Language",
-      "max_klishevich": "~ Max Klishevich ~",
+      "max_klishevich": "Max Klishevich",
       "sign_out": 'Sign out',
       'logged_in': 'logged in',
       'login': 'Login',
@@ -71,7 +71,6 @@ const resources = {
       'smth_wrong': 'Something went wrong. Try later',
       'item_sold_out': 'Item is sold out',
       'added_to_cart': 'added to cart',
-      'who_am_i': '<p>Maxim Klishevich is a famous scientist, Doctor of Theology and Philosophy of the Meister Eckhart International Academy of Theological and Philosophical Thought at Harvard University, director of several drama performances, author of the famous best-selling monograph “Theological and critical analysis of the doctrine of apocatastasis”, as well as more than 22 other scientific , journalistic and critical works, the singer is the owner of one of the most unique near-baritone in Russia, auditor, economist, collector. </p>Master of Sports in Backstroke and Colchis-Iberian Style. Participant of international tournaments in sports poker and chess. Education: Theological Seminary, Faculty of Economics, Krasnoyarsk State University. Founder of the Society of Friends of the Korean People. An internationally recognized expert in audit, soteriology and eschatology. Recently, a novice programmer.',
       'paris': 'Paris',
       'benares': 'Benares',
       'angkor': 'Angkor Wat',
@@ -85,13 +84,16 @@ const resources = {
       'crimea': 'Crimea',
       'solar': 'Solar eclipse Novosibirsk',
       'odessa': 'Odessa',
-      'surgut': 'Surgut'
+      'surgut': 'Surgut',
+      'show_email': 'show e-mail',
+      'max_klish': 'Max Klishevich',
+      'select_image': 'Upload Image'
     }
   },
   ru: {
     translation: {
       "select_language": "Выберите язык",
-      "max_klishevich": "~ Макс Клишевич ~",
+      "max_klishevich": "Макс Клишевич",
       'sign_out': 'Выйти',
       'logged_in': 'вошел',
       'login': 'Войти',
@@ -152,8 +154,6 @@ const resources = {
       'smth_wrong': 'Что-то пошло не так. Попробуйте позже.',
       'item_sold_out': 'Предмет продан',
       'added_to_cart': 'добавлен в корзину',
-      'who_am_i':
-        'Максим Клишевич – знаменитый ученый доктор богословия и философии Международной академии богословско-философской мысли при Гарвардском университете имени Мейстера Экхарта , режиссер-постановщик нескольких драматических спектаклей, автор знаменитого бестселлера-монографии “Богословско-критический анализ учения об апокатастасисе” , а также более 22 других научных, публицистических и критических трудов,  певец обладатель одного из уникальнейших около-баритона в России, аудитор, экономист, коллекционер. Мастер спорта по плаванию на спине и в колхидо-иберийском стиле. Участник международных турниров по спортивному покеру и шахматам. Образование: духовная семинария, экономический факультет Красноярского государственного университета.Основатель общества “Друзей корейского народа” Является международно признанным экспертом в области аудита, сотериологии и эсхатологии. С недавних пор начинающий программист.',
       'paris': 'Париж',
       'benares': 'Варанаси',
       'angkor': 'Ангкор Ват',
@@ -167,7 +167,10 @@ const resources = {
       'crimea': 'Крым',
       'solar': 'Солнечное затмение Новосибирск',
       'odessa': 'Одесса',
-      'surgut': 'Сургут'
+      'surgut': 'Сургут',
+      'show_email': 'показать e-mail',
+      'max_klish': 'Макс Клишевич',
+      'select_image': 'Загрузить картинку'
     }
   }
 };

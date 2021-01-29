@@ -7,7 +7,7 @@
     "start": "cross-env NODE_ENV=production node index.js",
     "server": "nodemon index.js",
     "client": "npm run start --prefix client",
-    "client:build": "rm -rf build && npm run build --prefix client && mv -f client/build ./",
+    "client:build": " rm -rf img_shop && cp -r build/static/img_shop/ img_shop && rm -rf build && npm run build --prefix client && mv -f client/build ./ && mkdir build/static/img_shop && cp -r img_shop/ build/static/img_shop",
     "dev": "cross-env NODE_ENV=development concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Max Klishevich <maksim@klishevich.com>",
