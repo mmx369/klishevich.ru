@@ -6,11 +6,31 @@ import { useHistory } from 'react-router-dom'
 import createNewUser from '../services/users'
 import Notification from '../components/Notification'
 import { useTranslation } from 'react-i18next'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles(theme => ({
+
+  root: {
+    marginTop: 70,
+    padding: 5,
+    border: 'solid 1px'
+  },
+
+  button: {
+    borderRadius: 13,
+    boxShadow: "0 3px 2px 2px",
+    padding: "0 10px",
+    margin: 10
+  },
+
+}))
 
 
 const SignUp = () => {
   const dispatch = useDispatch()
   const history = useHistory()
+
+  const classes = useStyles()
 
   const { t } = useTranslation()
 
@@ -41,7 +61,7 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className={classes.root}>
       <Notification />
       <h2>{t('sign_up')}</h2>
       <div>
@@ -70,7 +90,7 @@ const SignUp = () => {
 
       <div>
         <Button
-          style={{ marginTop: 10 }}
+          className={classes.button}
           variant='contained'
           color='primary'
           onClick={addNewUser}

@@ -10,8 +10,25 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 import blogService from '../services/blog'
 import Notification from '../components/Notification'
 import { useTranslation } from 'react-i18next'
-import useStyles from '../style'
+import { InputBase } from '@material-ui/core'
 import uploadService from '../services/upload'
+import { makeStyles } from '@material-ui/core/styles'
+
+
+const useStyles = makeStyles({
+  root: {
+    marginTop: 70,
+    padding: 5,
+    border: 'solid 1px'
+  },
+
+  button: {
+    borderRadius: 13,
+    boxShadow: "0 3px 2px 2px",
+    padding: "0 10px",
+    margin: 10
+  },
+})
 
 function AddNewBlog() {
 
@@ -30,7 +47,7 @@ function AddNewBlog() {
   const fileUploadHandler = () => {
     const fd = new FormData()
     fd.append('image', selectedFile, selectedFile.name)
-    uploadService.uploadImageShop(fd).then(res => {
+    uploadService.uploadImageBlog(fd).then(res => {
       console.log(res)
     })
   }
@@ -46,14 +63,22 @@ function AddNewBlog() {
   const dispatch = useDispatch();
 
   const handleAddNewBlog = (event) => {
+    console.log(111111);
     event.preventDefault();
     const content = document.getElementById('textarea').value
+
+    if (selectedFile) {
+      fileUploadHandler()
+    }
 
     const blogObject = {
       title: titleInput.value,
       author: auth.userName,
+      imgPath: (!!selectedFile) ? selectedFile.name : null,
       content,
     };
+
+    console.log('blogObject', blogObject);
 
     blogService.setToken(auth.token)
 
@@ -71,14 +96,13 @@ function AddNewBlog() {
 
   return (
     <>
-      <div className={classes.container} style={{ border: 'solid' }}>
+      <div className={classes.root}>
         <Notification />
         <h2>{t('add_new_blog')}</h2>
         <form onSubmit={handleAddNewBlog}>
           <div>
             <strong>{t('title')}</strong><br />
             <input
-              className={classes.input}
               type={titleInput.type}
               value={titleInput.value}
               name={titleInput.name}
@@ -93,30 +117,34 @@ function AddNewBlog() {
               placeholder={t('place_your_text_here')}
             />
           </div>
+          <div>
+            <label htmlFor="files" className={classes.button}>{t('select_image')}</label>
+            <InputBase
+              id='files'
+              style={{ visibility: 'hidden' }}
+              type='file'
+              name='image'
+              onChange={fileSelectedHandler}
+            />
+          </div>
           <Button
-            className={classes.buttonMain}
+            className={classes.button}
             type='submit'
             variant='outlined'
-            color='primary'
+            color='secondary'
           >
             {t('add_new_blog')}
           </Button>
         </form>
-      </div>
-      <div style={{ border: 'solid' }}>
 
-        <h2>Upload file</h2>
-        <input
-          type='file'
-          name='image'
-          onChange={fileSelectedHandler}
-        />
-        <button onClick={fileUploadHandler}>Upload</button>
+
+
+
       </div>
 
-      <div>
+      {/* <div>
         <p><img src="http://localhost:4000/api/uploads/6012e0cfe0d73e03d8e1d0c5" alt="" style={{ width: '300px' }} /></p>
-      </div>
+      </div> */}
 
 
     </>

@@ -1,7 +1,36 @@
 import React from "react"
 import { Typography } from '@material-ui/core'
-import useStyles from '../style'
 import image_1 from '../components/img/IMG_0678.JPG'
+import { makeStyles } from '@material-ui/styles'
+
+const useStyles = makeStyles((theme) => ({
+
+  divLeft: {
+    margin: 0,
+    marginTop: 65,
+    padding: 5,
+    justifyContent: 'space-around',
+    float: 'left',
+    width: '70%',
+    boxSizing: 'border-box',
+    textAlign: 'justify'
+  },
+
+  divRight: {
+    float: 'right',
+    marginTop: 115,
+    width: '30%',
+    boxSizing: 'border-box',
+  },
+  img: {
+    width: '100%',
+    borderRadius: 15,
+    marginBottom: 35,
+    marginTop: 13,
+    paddingRight: 0
+  },
+
+}))
 
 export const AboutEng = () => {
 
@@ -9,11 +38,9 @@ export const AboutEng = () => {
 
   return (
     <>
-      <div className={classes.containerText}>
+      <div className={classes.divLeft}>
         <Typography
-          className={classes.typo}
           align='center'
-          color='primary'
           variant='h4'
         >
           About me

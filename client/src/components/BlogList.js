@@ -3,13 +3,11 @@ import { initializeBlogs } from '../reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import GridList from '@material-ui/core/GridList'
 import Blog from '../components/Blog'
-import useStyles from '../style'
 
 
 const BlogList = () => {
 
   const dispatch = useDispatch()
-  const classes = useStyles()
 
   const blogs = useSelector((state) => state.blogR)
 
@@ -21,8 +19,8 @@ const BlogList = () => {
 
 
   return (
-    <div className={classes.containerBlog}>
-      <GridList className={classes.gridListShop}>
+    <div>
+      <GridList>
         {blogs.map((blog) => (
           <Blog
             key={blog.id}

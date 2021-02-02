@@ -5,13 +5,15 @@ import { useAuth } from './hooks/auth.hook'
 import { AuthContext } from './context/AuthContext'
 import { Loader } from './components/Loader'
 import Footer from './components/Footer'
-import useStyles from './style'
+import { ThemeProvider } from '@material-ui/core/styles'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import theme from './theme'
+import { Grid } from '@material-ui/core'
 
 const App = () => {
 
   const { token, login, logout, userId, userName, ready } = useAuth()
   const isAuthenticated = !!token
-  const classes = useStyles()
   const routes = useRoutes()
 
   if (!ready) {
@@ -19,17 +21,32 @@ const App = () => {
   }
 
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <AuthContext.Provider value={{
         token, login, logout, userId, userName, isAuthenticated
       }}>
-        <AppBarUi userName={userName} />
-        <div className={classes.containerMain} style={{ border: 'dotted' }}>
-          {routes}
-        </div>
-        <Footer />
+
+        <Grid container direction='column'>
+          <Grid item>
+            <AppBarUi userName={userName} />
+          </Grid>
+
+          <Grid item container>
+            <Grid item xs={false} sm={2} />
+            <Grid item xs={12} sm={8}>
+              {routes}
+            </Grid>
+          </Grid>
+          <Grid item xs={false} sm={2} />
+
+          <Grid item>
+            <Footer />
+          </Grid>
+        </Grid>
+
       </AuthContext.Provider>
-    </>
+    </ThemeProvider>
   );
 };
 

@@ -1,21 +1,26 @@
 import React from "react"
 import { useSelector } from 'react-redux'
-import useStyles from '../style'
 import { Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  root: {
+    marginTop: 70,
+    padding: 5,
+  },
+})
 
 const WorkEng = () => {
 
   const classes = useStyles()
 
   return (
-    <div>
+    <div className={classes.root}>
       <Typography
-        className={classes.typo}
         align='left'
-        color='primary'
         variant='h4'
       >
-        JavaScript, React, Node.js Dev
+        JavaScript, React, Node.js
         </Typography>
 
       <Typography
@@ -40,12 +45,11 @@ const WorkRu = () => {
   return (
     <div>
       <Typography
-        className={classes.typo}
-        color='primary'
+        className={classes.root}
         align='left'
         variant='h4'
       >
-        JavaScript, React, Node.js Dev
+        JavaScript, React, Node.js
         </Typography>
 
       <Typography
@@ -68,7 +72,7 @@ const Work = () => {
   const language = useSelector((state) => state.langR)
 
   return (
-    <div style={{ marginBottom: '600px' }}>
+    <div>
       { (language === 'en' ? <WorkEng /> : <WorkRu />)}
     </div >
   )

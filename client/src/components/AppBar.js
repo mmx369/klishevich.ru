@@ -1,4 +1,5 @@
 import React, { useState, useContext, Suspense } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
@@ -18,7 +19,23 @@ import { AuthContext } from '../context/AuthContext'
 import { MyDrawer } from './Drawer'
 import LanguageSelect from './LangSelect'
 import { useTranslation } from 'react-i18next'
-import useStyles from '../style'
+
+const useStyles = makeStyles((theme) => ({
+
+  root: {
+    flexGrow: 1,
+    flex: 1,
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+  },
+
+  menuButton: {
+    marginRight: theme.spacing(1),
+  },
+}))
+
 
 const AppBarUi = ({ userName }) => {
 
@@ -41,6 +58,9 @@ const AppBarUi = ({ userName }) => {
       setShowLogin(true)
     } else {
       auth.logout()
+      setAnchorEl(null)
+      history.push('/');
+      setShowLogin(false)
     }
   };
 
@@ -68,31 +88,35 @@ const AppBarUi = ({ userName }) => {
   }
 
   return (
-    <div>
+    <>
       {showLogin && <LoginModal user={userName} />}
-      <FormGroup>
-        <FormControlLabel
-          control={<Switch checked={auth.isAuthenticated} onChange={handleChange} aria-label='login switch' />}
-          label={userName ? `${userName} ${t('logged_in')}` : `${t('login')}`}
-        />
-      </FormGroup>
-      <MyDrawer
-        stateLeft={stateLeft}
-        setStateLeft={setStateLeft}
-        userName={userName} />
-      <AppBar position='fixed'>
-        <Toolbar>
+      <AppBar
+        position='fixed'
+      >
+        <Toolbar
+        >
           <IconButton
             onClick={toggleDrawerOn}
+            className={classes.menuButton}
             edge='start'
             color='inherit'
             aria-label='menu'>
             <MenuIcon />
           </IconButton>
 
-          <Typography variant='h6' className={classes.title}>
+          <Typography
+            variant='h6'
+            className={classes.root}
+          >
             {t('max_klishevich')}
           </Typography>
+
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch checked={auth.isAuthenticated} onChange={handleChange} aria-label='login switch' />}
+              label={userName ? `${userName} ${t('logged_in')}` : `${t('login')}`}
+            />
+          </FormGroup>
 
           {!!cart.length && (
             <div>
@@ -104,49 +128,61 @@ const AppBarUi = ({ userName }) => {
               </IconButton>
             </div>
           )}
-          <FormGroup>
-            <FormControlLabel
-              control={<Switch checked={auth.isAuthenticated} onChange={handleChange} aria-label='login switch' />}
-              label={userName ? `${userName} ${t('logged_in')}` : `${t('login')}`}
-            />
-          </FormGroup>
+
           <Suspense fallback='...'>
-            <div className='language-select'>
+            <div className='language-select'
+            >
               <LanguageSelect />
             </div>
           </Suspense>
-          <div>
-            <IconButton
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
-              onClick={handleMenu}
-              color='inherit'
-            >
-              <AccountCircle />
-            </IconButton>
 
-            <Menu
-              id='menu-appbar'
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={open}
-              onClose={handleClose}
-            >
-              <MenuItem onClick={handleSignOut}>{t('sign_out')}</MenuItem>
-            </Menu>
-          </div>
+          <IconButton
+            edge='end'
+            aria-label='account of current user'
+            aria-controls='menu-appbar'
+            aria-haspopup='true'
+            onClick={handleMenu}
+            color='inherit'
+          >
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            id='menu-appbar'
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={open}
+            onClose={handleClose}
+          >
+            {(auth.isAuthenticated) ?
+
+              <MenuItem
+                onClick={handleSignOut}
+              >
+                {t('sign_out')}
+              </MenuItem>
+              :
+              <MenuItem
+                onClick={handleChange}
+              >
+                {t('sign_in')}
+              </MenuItem>
+            }
+          </Menu>
         </Toolbar>
       </AppBar>
-    </div >
+      <MyDrawer
+        stateLeft={stateLeft}
+        setStateLeft={setStateLeft}
+        userName={userName} />
+    </>
   )
 }
 

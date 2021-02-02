@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   root: {
     width: 345,
     margin: 5,
-    marginBottom: 25,
+    padding: 5,
   },
   media: {
     height: 300,
@@ -69,19 +69,19 @@ export default function MediaCard({ el }) {
             <Typography gutterBottom variant='h5' component='h2'>
               {el.nameOfGoods}
             </Typography>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant='body2' component='p'>
               {t('in_stock')}{(el.amountOfGoods === 0) ? `${t('sold_out')}` : el.amountOfGoods}
             </Typography>
-            <Typography variant='body2' color='textSecondary' component='p'>
+            <Typography variant='body2' component='p'>
               {t('Price')}: ${el.priceOfGoods}
             </Typography>
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button size='small' color='primary' onClick={handleModalOpen}>
+          <Button size='small' color='secondary' onClick={handleModalOpen}>
             {t('full_size')}
           </Button>
-          <Button size='small' color='primary' onClick={() => { handleDispatch(el.id, el.nameOfGoods, el.amountOfGoods) }} >
+          <Button size='small' color='secondary' onClick={() => { handleDispatch(el.id, el.nameOfGoods, el.amountOfGoods) }} >
             {t('add_to_cart')}
           </Button>
         </CardActions>

@@ -6,7 +6,26 @@ import Button from '@material-ui/core/Button'
 import { CartEmpty } from './CartEmpty'
 import { CartTable } from './CartTable'
 import { initItems } from '../reducers/cartReducer'
-import useStyles from '../style'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  root: {
+    marginTop: 65,
+    marginBottom: 10,
+    padding: 5,
+  },
+  button: {
+    borderRadius: 13,
+    boxShadow: "0 3px 2px 2px",
+    padding: "0 10px",
+    margin: 10
+  },
+  buttonsDiv: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+})
 
 export const Cart = () => {
   let history = useHistory();
@@ -29,24 +48,24 @@ export const Cart = () => {
   const isCartEmpty = !window.localStorage.getItem('cart')
 
   return (
-    <div className={classes.container}>
+    <div className={classes.root}>
 
       {isCartEmpty && <CartEmpty />}
       {isCartEmpty || <CartTable />}
 
       {isCartEmpty ||
-        <div>
+        <div className={classes.buttonsDiv}>
           <Button
-            className={classes.buttonMain}
+            className={classes.button}
             variant='outlined'
-            color='primary'
+            color='secondary'
             onClick={() => handleClearCart()}>
             {t('clear_cart')}
           </Button>
           <Button
-            className={classes.buttonMain}
+            className={classes.button}
             variant='outlined'
-            color='primary'
+            color='secondary'
             onClick={handleClick}>
             {t('check_out')}
           </Button>

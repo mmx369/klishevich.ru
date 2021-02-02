@@ -4,7 +4,23 @@ import { TextField, Button } from '@material-ui/core'
 import { useTranslation } from 'react-i18next'
 import cartServices from '../services/cart'
 import Select from '../components/Select'
-import useStyles from '../style'
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  root: {
+    marginTop: 70,
+    padding: 5,
+    border: 'solid 1px',
+    display: 'inline-block',
+  },
+
+  button: {
+    borderRadius: 13,
+    boxShadow: "0 3px 2px 2px",
+    padding: "0 10px",
+    margin: 10
+  },
+})
 
 const CheckOut = () => {
 
@@ -35,7 +51,7 @@ const CheckOut = () => {
   };
 
   return (
-    <div className={classes.container}>
+    <div className={classes.root}>
       <h1 style={{ margin: '0' }}>{t('shipp_address')}</h1>
       <form onSubmit={makeNewOder}>
 
@@ -86,9 +102,9 @@ const CheckOut = () => {
         <br />
         <div>
           <Button
-            className={classes.buttonMain}
+            className={classes.button}
             variant='outlined'
-            color='primary'
+            color='secondary'
             type='submit'>
             {t('finish_order')}
           </Button>

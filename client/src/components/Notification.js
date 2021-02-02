@@ -55,14 +55,15 @@ const Notification = () => {
       autoHideDuration={5000}
       TransitionComponent={TransitionLeft}
       onClose={handleClose}
-      key={vertical + horizontal}>
+      key={vertical + horizontal}
+    >
       <Alert
         severity="error"
         onClose={handleClose}>
         <strong>{message.message}</strong>
       </Alert>
-    </Snackbar>
-  </div>)
+    </Snackbar >
+  </div >)
 };
 
 export default Notification

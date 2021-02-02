@@ -4,7 +4,6 @@ import Modal from '@material-ui/core/Modal'
 import Button from '@material-ui/core/Button'
 import { useTranslation } from 'react-i18next'
 
-
 function rand() {
   return Math.round(Math.random() * 20) - 10
 }
@@ -23,8 +22,6 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
-    width: '100vw-20px',
-    height: '100vh-20px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -44,7 +41,7 @@ export function SimpleModal({ open, setOpen, image }) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       <img src={image} alt=''></img>
-      <Button size='small' color='primary' type='button' onClick={handleClose}>
+      <Button size='small' color='secondary' type='button' onClick={handleClose}>
         {t('close')}
       </Button>
     </div>

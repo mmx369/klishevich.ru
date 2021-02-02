@@ -1,7 +1,44 @@
-const blogsRouter = require("express").Router();
-const Blog = require("../models/blogs.js");
-const User = require("../models/users");
-const jwt = require("jsonwebtoken");
+const blogsRouter = require("express").Router()
+const Blog = require("../models/blogs.js")
+const User = require("../models/users")
+const jwt = require("jsonwebtoken")
+const multer = require('multer')
+
+//upload file
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'build/static/img_blog')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+})
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    cb(null, true)
+  } else {
+    console.log('wrong file extension')
+    cb(null, false)
+  }
+}
+
+const upload = multer({ storage: storage, fileFilter })
+
+blogsRouter.post('/img', upload.single('image'), async (req, res) => {
+  console.log('POST-GOODS!!!', req.file);
+  try {
+    const { filename, path: filepath, mimetype } = req.file
+    console.log('filename:', filename, 'filepath:', filepath, 'mimetype:', mimetype)
+
+    return res.status(201).json({
+      message: 'File uploaded successfully'
+    })
+  } catch (e) {
+    console.error(e)
+  }
+})
+// end upload
 
 blogsRouter.get("/", async (request, response) => {
   // const blogs = await Blog.find({}).skip(1).limit(5)
@@ -22,6 +59,7 @@ blogsRouter.post("/", async (request, response) => {
     title: body.title,
     author: user.name,
     content: body.content,
+    imgPath: body.imgPath,
     likes: 0,
     date: new Date(),
     user: user._id,

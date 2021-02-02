@@ -10,12 +10,22 @@ import { AuthContext } from '../context/AuthContext'
 import { useTranslation } from 'react-i18next'
 
 const useStyles = makeStyles(theme => ({
+
   modal: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  button: {
+    borderRadius: 13,
+    boxShadow: "0 3px 2px 2px",
+    padding: "0 10px",
+    margin: 10
+  },
+
   paper: {
+    justifyContent: 'center',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -43,6 +53,7 @@ export default function LoginModal() {
 
   const handleClose = () => {
     setOpen(false)
+    history.push('/')
   };
 
   const loginHandler = async () => {
@@ -98,16 +109,16 @@ export default function LoginModal() {
             </div>
             <div>
               <Button
+                className={classes.button}
                 variant='outlined'
-                color='primary'
-                style={{ marginTop: 10, marginRight: 10 }}
+                color='secondary'
                 onClick={loginHandler}>
                 {t('sign_in')}
               </Button>
               <Button
+                className={classes.button}
                 variant='outlined'
-                color='primary'
-                style={{ marginTop: 10 }}
+                color='secondary'
                 onClick={registerHandler}>
                 {t('sign_up')}
               </Button>

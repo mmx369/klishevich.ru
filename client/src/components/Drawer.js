@@ -13,7 +13,33 @@ import { Link } from 'react-router-dom'
 import AcUnitIcon from '@material-ui/icons/AcUnit'
 import WorkIcon from '@material-ui/icons/Work'
 import { useTranslation } from 'react-i18next'
-import useStyles from '../style'
+import { makeStyles } from '@material-ui/styles'
+import { teal } from '@material-ui/core/colors'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
+import IconButton from '@material-ui/core/IconButton'
+
+const useStyles = makeStyles((theme) => ({
+
+  root: {
+    background: teal[100],
+    height: '100%',
+    [theme.breakpoints.up('sm')]: {
+      width: 230,
+      flexShrink: 0,
+    },
+  },
+
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+    background: teal[100],
+  },
+
+}))
 
 export const MyDrawer = ({ stateLeft, setStateLeft, userName }) => {
 
@@ -29,7 +55,6 @@ export const MyDrawer = ({ stateLeft, setStateLeft, userName }) => {
 
   const ListAdmin = () => (
     <>
-      <Divider />
       <List>
         {[`${t('add_item_to_shop')}`, `${t('add_new_blog')}`].map((text, index) => (
           <ListItem button key={text} component={Link} to={index === 0 ? '/_addingItem' : '/_addingNewBlog'}>
@@ -60,10 +85,10 @@ export const MyDrawer = ({ stateLeft, setStateLeft, userName }) => {
 
   const list = (anchor) => (
     <div
-      className={classes.listDrawer}
       role='presentation'
       onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
+      className={classes.root}
     >
       <List>
         {[`${t('home')}`, `${t('about')}`, `${t('shop')}`, `${t('blog')}`, `${t('work')}`].map((text, index) => (
@@ -78,16 +103,25 @@ export const MyDrawer = ({ stateLeft, setStateLeft, userName }) => {
             <ListItemText primary={text} />
           </ListItem>
         ))}
+        <Divider />
       </List>
       { userName === 'maximus' && <ListAdmin />}
     </div >
   );
 
   return (
-    <div>
-      <Drawer anchor='left' open={stateLeft} onClose={toggleDrawer()} >
-        {list('left')}
-      </Drawer>
-    </div>
+    <Drawer
+      anchor='left'
+      open={stateLeft}
+      onClose={toggleDrawer()}
+    >
+      <div className={classes.drawerHeader}>
+        <IconButton onClick={toggleDrawer()}>
+          <ChevronLeftIcon />
+        </IconButton>
+      </div>
+      <Divider />
+      {list('left')}
+    </Drawer>
   )
 }

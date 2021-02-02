@@ -2,13 +2,27 @@ import React, { useState } from "react"
 import { TextField, Button } from "@material-ui/core"
 import { useDispatch } from "react-redux"
 import shopServices from '../services/shop'
-import { useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next"
 import uploadService from '../services/upload'
-import useStyles from '../style'
 import Notification from './Notification'
 import { createNewMsg } from '../reducers/newMsgReducer'
-import { InputBase } from '@material-ui/core';
+import { InputBase } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
+const useStyles = makeStyles({
+  root: {
+    marginTop: 70,
+    padding: 5,
+    border: 'solid 1px'
+  },
+
+  button: {
+    borderRadius: 13,
+    boxShadow: "0 3px 2px 2px",
+    padding: "0 10px",
+    margin: 10
+  },
+})
 
 const AddNewItem = () => {
 
@@ -116,7 +130,7 @@ const AddNewItem = () => {
   return (
     <>
       <Notification />
-      <div>
+      <div className={classes.root}>
         <h2>{t('add_item_to_shop')}</h2>
         <form onSubmit={AddNewItem}>
 
@@ -140,26 +154,29 @@ const AddNewItem = () => {
           </div>
 
           <div>
+            <label htmlFor="files" className={classes.button}>{t('select_image')}</label>
+            <InputBase
+              id='files'
+              style={{ visibility: 'hidden' }}
+              type='file'
+              name='image'
+              onChange={fileSelectedHandler}
+            />
+          </div>
+
+
+          <div>
             <Button
-              className={classes.buttonMain}
+              className={classes.button}
               variant="outlined"
-              color="primary"
+              color="secondary"
               type="submit"
             >
               {t('add_item_to_shop')}
             </Button>
           </div>
         </form>
-        <div>
-          <label htmlFor="files" className={classes.buttonMain}>{t('select_image')}</label>
-          <InputBase
-            id='files'
-            style={{ visibility: 'hidden' }}
-            type='file'
-            name='image'
-            onChange={fileSelectedHandler}
-          />
-        </div>
+
       </div>
       <br />
 
