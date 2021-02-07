@@ -5,12 +5,14 @@ import cartReducer from './reducers/cartReducer'
 import msgReducer from "./reducers/newMsgReducer"
 import blogReducer from './reducers/blogReducer'
 import langReducer from './reducers/langReducer'
+import currencyReducer from './reducers/currencyReducer'
 
 const reducer = combineReducers({
   cartR: cartReducer,
   msgR: msgReducer,
   blogR: blogReducer,
-  langR: langReducer
+  langR: langReducer,
+  currR: currencyReducer,
 })
 
 const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))

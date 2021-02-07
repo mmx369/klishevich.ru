@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { useHistory } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
@@ -35,6 +35,12 @@ export const Cart = () => {
   const handleClick = () => history.push('/checkout')
   const dispatch = useDispatch()
 
+  const handleGoShopping = () => history.push('/shop')
+
+  const currency = useSelector((state) => state.currR)
+
+  console.log('cart currency', currency);
+
 
   useEffect(() => {
     dispatch(initItems())
@@ -51,7 +57,7 @@ export const Cart = () => {
     <div className={classes.root}>
 
       {isCartEmpty && <CartEmpty />}
-      {isCartEmpty || <CartTable />}
+      {isCartEmpty || <CartTable currency={currency} />}
 
       {isCartEmpty ||
         <div className={classes.buttonsDiv}>
@@ -68,6 +74,14 @@ export const Cart = () => {
             color='secondary'
             onClick={handleClick}>
             {t('check_out')}
+          </Button>
+          <Button
+            className={classes.button}
+            variant='outlined'
+            color='secondary'
+            onClick={() => handleGoShopping()}
+          >
+            {t('go_shopping')}
           </Button>
         </div>
       }

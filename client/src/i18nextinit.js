@@ -87,7 +87,16 @@ const resources = {
       'surgut': 'Surgut',
       'show_email': 'show e-mail',
       'max_klish': 'Max Klishevich',
-      'select_image': 'Upload Image'
+      'select_image': 'Upload Image',
+      'rub': 'Rubles',
+      'currency': 'Choose currenсy',
+      'usd': 'US dollar',
+      'rur': 'Russian ruble',
+      'select_category': 'Select type',
+      'make_order': 'How to make order',
+      'how_to_pay': 'How to pay',
+      'shipping': 'Shipping',
+      'contacts': 'Contacts'
     }
   },
   ru: {
@@ -170,7 +179,16 @@ const resources = {
       'surgut': 'Сургут',
       'show_email': 'показать e-mail',
       'max_klish': 'Макс Клишевич',
-      'select_image': 'Загрузить картинку'
+      'select_image': 'Загрузить картинку',
+      'rub': 'рублей',
+      'currency': 'Выберите валюту',
+      'usd': 'Доллар США',
+      'rur': 'Российский рубль',
+      'select_category': 'Выберети тип',
+      'make_order': 'Как сделать заказ',
+      'how_to_pay': 'Способы оплаты',
+      'shipping': 'Доставка',
+      'contacts': 'Контакты и реквизиты'
     }
   }
 };

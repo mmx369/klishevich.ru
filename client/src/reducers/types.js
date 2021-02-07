@@ -9,3 +9,5 @@ export const DELETE_BLOG = 'DELETE_BLOG'
 export const UPDATED_BLOG = 'UPDATED_BLOG'
 
 export const CHANGE_LANG = 'CHANGE_LANG'
+
+export const CHANGE_CURRENCY = 'CHANGE_CURRENCY'

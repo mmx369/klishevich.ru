@@ -8,6 +8,8 @@ import Notification from './Notification'
 import { createNewMsg } from '../reducers/newMsgReducer'
 import { InputBase } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
+import SelectShop from '../components/SelectShop'
+
 
 const useStyles = makeStyles({
   root: {
@@ -30,6 +32,8 @@ const AddNewItem = () => {
   const [newItemAmount, setNewItemAmount] = useState("")
   const [newItemPrice, setNewItemPrice] = useState("")
   const [newItemPath, setNewItemPath] = useState("")
+  const [country, setCountry] = useState('')
+  const [category, setCategory] = useState('')
   const dispatch = useDispatch()
   const classes = useStyles()
 
@@ -103,7 +107,9 @@ const AddNewItem = () => {
       nameOfGoods: newItemName,
       amountOfGoods: newItemAmount,
       priceOfGoods: newItemPrice,
-      imagePath: newItemPath
+      imagePath: newItemPath,
+      country,
+      category
     }
 
     shopServices.createNewItem(newItem)
@@ -133,6 +139,8 @@ const AddNewItem = () => {
       <div className={classes.root}>
         <h2>{t('add_item_to_shop')}</h2>
         <form onSubmit={AddNewItem}>
+
+          <SelectShop country={country} setCountry={setCountry} category={category} setCategory={setCategory} />
 
           <div>
             <TextField value={newItemName} onChange={handleNewItemName} label={t('new_item_name')} />

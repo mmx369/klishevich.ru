@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
+const { Types } = require('mongoose')
+
 
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useFindAndModify", false);
@@ -14,6 +16,8 @@ const goodsSchema = new mongoose.Schema({
   },
   amountOfGoods: Number,
   priceOfGoods: Number,
+  country: { type: Types.ObjectId, ref: 'Country' },
+  category: { type: Types.ObjectId, ref: 'Category' },
   imagePath: String
 });
 

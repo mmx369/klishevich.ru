@@ -13,6 +13,7 @@ import { SimpleModal } from './Modal'
 import Notification from './Notification'
 import { createNewMsg } from '../reducers/newMsgReducer'
 import { useTranslation } from 'react-i18next'
+import { EXCHANGE_RATE } from '../constant'
 
 const useStyles = makeStyles({
   root: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles({
   },
 })
 
-export default function MediaCard({ el }) {
+export default function MediaCard({ el, currency }) {
 
   const { t } = useTranslation()
 
@@ -73,7 +74,7 @@ export default function MediaCard({ el }) {
               {t('in_stock')}{(el.amountOfGoods === 0) ? `${t('sold_out')}` : el.amountOfGoods}
             </Typography>
             <Typography variant='body2' component='p'>
-              {t('Price')}: ${el.priceOfGoods}
+              {t('Price')}: {(currency === 'en') ? `$${el.priceOfGoods}` : `${el.priceOfGoods * EXCHANGE_RATE} ${t('rub')}`}
             </Typography>
           </CardContent>
         </CardActionArea>

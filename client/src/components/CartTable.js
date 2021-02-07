@@ -8,16 +8,17 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Paper from '@material-ui/core/Paper'
 import { useTranslation } from 'react-i18next'
+import { TAX_SHIPPING } from '../constant'
+import { EXCHANGE_RATE } from '../constant'
 
 
-export const CartTable = () => {
+export const CartTable = ({ currency }) => {
 
   const { t } = useTranslation()
-  const TAX_SHIPPING = 0.1
   const cart = useSelector(state => state.cartR) || []
 
   function ccyFormat(num) {
-    return `${num.toFixed(2)}`
+    return `${num.toFixed(0)}`
   }
 
   function subtotal(items) {
@@ -25,7 +26,13 @@ export const CartTable = () => {
   }
 
   const invoiceSubtotal = subtotal(cart)
-  const invoiceTaxes = (TAX_SHIPPING * invoiceSubtotal > 10) ? TAX_SHIPPING * invoiceSubtotal : (TAX_SHIPPING * invoiceSubtotal === 0) ? 0 : 10
+
+  const invoiceTaxes =
+    (TAX_SHIPPING * invoiceSubtotal > 20) ? 20
+      : (TAX_SHIPPING * invoiceSubtotal > 10) ? TAX_SHIPPING * invoiceSubtotal
+        : (TAX_SHIPPING * invoiceSubtotal === 0) ? 0
+          : 10
+
   const invoiceTotal = invoiceTaxes + invoiceSubtotal
 
   return (
@@ -41,8 +48,8 @@ export const CartTable = () => {
             <TableRow>
               <TableCell><strong>{t('desc')}</strong></TableCell>
               <TableCell align='right'><strong>{t('qty')}</strong></TableCell>
-              <TableCell align='right'><strong>{t('Price')}($)</strong></TableCell>
-              <TableCell align='right'><strong>{t('sum')}($)</strong></TableCell>
+              <TableCell align='right'><strong>{t('Price')}{(currency === 'en') ? ' $' : ' RUR'}</strong></TableCell>
+              <TableCell align='right'><strong>{t('sum')}{(currency === 'en') ? ' $' : ' RUR'}</strong></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -50,24 +57,36 @@ export const CartTable = () => {
               <TableRow key={el.id}>
                 <TableCell>{el.nameOfGoods}</TableCell>
                 <TableCell align='right'>{el.amountOfGoods}</TableCell>
-                <TableCell align='right'>{el.priceOfGoods}</TableCell>
-                <TableCell align='right'>{ccyFormat(el.amountOfGoods * el.priceOfGoods)}</TableCell>
+                <TableCell align='right'>{currency === 'en' ? `${el.priceOfGoods}` : `${el.priceOfGoods * EXCHANGE_RATE}`}</TableCell>
+                <TableCell align='right'>{currency === 'en' ? `${ccyFormat(el.amountOfGoods * el.priceOfGoods)}`
+                  : `${ccyFormat(el.amountOfGoods * el.priceOfGoods * EXCHANGE_RATE)}`}
+                </TableCell>
               </TableRow>
             ))}
 
             <TableRow>
               <TableCell rowSpan={3} />
               <TableCell colSpan={2}>{t('subtotal')}</TableCell>
-              <TableCell align='right'>{ccyFormat(invoiceSubtotal)}</TableCell>
+              <TableCell align='right'>
+                {currency === 'en' ? `${ccyFormat(invoiceSubtotal)}` : `${ccyFormat(invoiceSubtotal) * EXCHANGE_RATE}`
+                }
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell>{t('tax_ship')}</TableCell>
-              <TableCell align='right'>{`${(TAX_SHIPPING * 100).toFixed(0)} %`} ({t('min')}$10)</TableCell>
-              <TableCell align='right'>{ccyFormat(invoiceTaxes)}</TableCell>
+              <TableCell align='right'>
+                {`${(TAX_SHIPPING * 100).toFixed(0)} %`} ({t('min')}{(currency === 'en') ? '$10' : '800 RUR'})
+              </TableCell>
+              <TableCell align='right'>
+                {currency === 'en' ? `${ccyFormat(invoiceTaxes)}` : `${ccyFormat(invoiceTaxes * EXCHANGE_RATE)}`
+                }
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2}>{t('total')}</TableCell>
-              <TableCell align='right'>{ccyFormat(invoiceTotal)}</TableCell>
+              <TableCell align='right'>
+                {currency === 'en' ? `${ccyFormat(invoiceTotal)}` : `${ccyFormat(invoiceTotal) * EXCHANGE_RATE}`}
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>
