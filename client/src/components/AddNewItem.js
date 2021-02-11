@@ -1,70 +1,90 @@
-import React, { useState } from "react"
-import { TextField, Button } from "@material-ui/core"
-import { useDispatch } from "react-redux"
-import shopServices from '../services/shop'
-import { useTranslation } from "react-i18next"
-import uploadService from '../services/upload'
-import Notification from './Notification'
-import { createNewMsg } from '../reducers/newMsgReducer'
-import { InputBase } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import SelectShop from '../components/SelectShop'
-
+import React, { useState, useContext } from 'react';
+import { TextField, Button } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import shopServices from '../services/shop';
+import { useTranslation } from 'react-i18next';
+import uploadService from '../services/upload';
+import Notification from './Notification';
+import { AuthContext } from '../context/AuthContext';
+import { createNewMsg } from '../reducers/newMsgReducer';
+import { InputBase } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import SelectShop from '../components/SelectShop';
+import { teal } from '@material-ui/core/colors';
 
 const useStyles = makeStyles({
   root: {
     marginTop: 70,
-    padding: 5,
-    border: 'solid 1px'
+    padding: 15,
+    border: 'solid 1px',
   },
 
   button: {
     borderRadius: 13,
-    boxShadow: "0 3px 2px 2px",
-    padding: "0 10px",
-    margin: 10
+    boxShadow: '0 3px 2px 2px',
+    padding: '0 10px',
+    margin: '10px 0',
   },
-})
+
+  inputStyle: {
+    borderRadius: 13,
+    boxShadow: '0 3px 2px 2px',
+    padding: '5px 10px',
+    margin: '10px 0',
+    color: teal[500],
+    textTransform: 'uppercase',
+    cursor: 'pointer',
+    transition: 'all 0.22s',
+    fontWeight: 500,
+  },
+  field: {
+    margin: 0,
+  },
+});
 
 const AddNewItem = () => {
+  const [newItemName, setNewItemName] = useState('');
+  const [newItemAmount, setNewItemAmount] = useState('');
+  const [newItemPrice, setNewItemPrice] = useState('');
+  const [newItemPath, setNewItemPath] = useState('');
+  const [country, setCountry] = useState('');
+  const [category, setCategory] = useState('');
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
-  const [newItemName, setNewItemName] = useState("")
-  const [newItemAmount, setNewItemAmount] = useState("")
-  const [newItemPrice, setNewItemPrice] = useState("")
-  const [newItemPath, setNewItemPath] = useState("")
-  const [country, setCountry] = useState('')
-  const [category, setCategory] = useState('')
-  const dispatch = useDispatch()
-  const classes = useStyles()
+  const { t } = useTranslation();
 
+  const auth = useContext(AuthContext);
 
-  // const [listOfImages, setListOfImages] = useState([])
+  console.log('Auth: ', auth);
 
-  const { t } = useTranslation()
+  // const input = document.querySelector('#files');
+  // const triggerInput = () => input.onChange()
+
+  // console.log('Input', input);
 
   //upload image - begin-----------
 
-  const [selectedFile, setSelectedFile] = useState(null)
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const fileSelectedHandler = event => {
+  const fileSelectedHandler = (event) => {
     console.log(1111, event.target.files[0]);
-    setSelectedFile(event.target.files[0])
-    setNewItemPath(event.target.files[0].name)
-  }
+    setSelectedFile(event.target.files[0]);
+    setNewItemPath(event.target.files[0].name);
+  };
 
   const fileUploadHandler = () => {
     if (!selectedFile) {
-      return null
+      return null;
     }
-    const fd = new FormData()
-    fd.append('image', selectedFile, selectedFile.name)
-    uploadService.uploadImageShop(fd).then(res => {
-      console.log(res)
-    })
-  }
+    const fd = new FormData();
+    fd.append('image', selectedFile, selectedFile.name);
+    uploadService.uploadImageShop(fd).then((res) => {
+      console.log(res);
+    });
+  };
 
   //upload image -end-------------
-
 
   // useEffect(() => {
   //   (async () => {
@@ -92,16 +112,15 @@ const AddNewItem = () => {
 
   const handleNewItemPath = (event) => {
     if (selectedFile) {
-      setNewItemPath(selectedFile.name)
+      setNewItemPath(selectedFile.name);
     } else {
       setNewItemPath(event.target.value);
     }
   };
 
-
   const AddNewItem = (event) => {
     event.preventDefault();
-    fileUploadHandler()
+    fileUploadHandler();
 
     const newItem = {
       nameOfGoods: newItemName,
@@ -109,28 +128,38 @@ const AddNewItem = () => {
       priceOfGoods: newItemPrice,
       imagePath: newItemPath,
       country,
-      category
-    }
+      category,
+    };
 
-    shopServices.createNewItem(newItem)
+    console.log('newItem; ', newItem);
+
+    shopServices.setToken(auth.token);
+
+    shopServices
+      .createNewItem(newItem)
       .then((data) => {
-        console.log(2222, data)
-        setNewItemName('')
-        setNewItemAmount('')
-        setNewItemPrice('')
-        setNewItemPath('')
-        dispatch(createNewMsg({ message: `Item ${newItem.nameOfGoods} added to shop`, msgType: 'success' }))
+        console.log(2222, data);
+        setNewItemName('');
+        setNewItemAmount('');
+        setNewItemPrice('');
+        setNewItemPath('');
+        dispatch(
+          createNewMsg({
+            message: `Item ${newItem.nameOfGoods} added to shop`,
+            msgType: 'success',
+          })
+        );
         setTimeout(() => {
-          dispatch(createNewMsg([]))
+          dispatch(createNewMsg([]));
         }, 3000);
       })
       .catch((e) => {
-        console.error(e)
-        dispatch(createNewMsg({ message: e.message, msgType: 'error' }))
+        console.error(e);
+        dispatch(createNewMsg({ message: e.message, msgType: 'error' }));
         setTimeout(() => {
-          dispatch(createNewMsg([]))
+          dispatch(createNewMsg([]));
         }, 3000);
-      })
+      });
   };
 
   return (
@@ -139,39 +168,58 @@ const AddNewItem = () => {
       <div className={classes.root}>
         <h2>{t('add_item_to_shop')}</h2>
         <form onSubmit={AddNewItem}>
-
-          <SelectShop country={country} setCountry={setCountry} category={category} setCategory={setCategory} />
+          <SelectShop
+            country={country}
+            setCountry={setCountry}
+            category={category}
+            setCategory={setCategory}
+            className={classes.field}
+          />
 
           <div>
-            <TextField value={newItemName} onChange={handleNewItemName} label={t('new_item_name')} />
+            <TextField
+              value={newItemName}
+              onChange={handleNewItemName}
+              label={t('new_item_name')}
+            />
           </div>
 
           <div>
-            <TextField value={newItemAmount} onChange={handleNewItemAmount} label={t('amount_of_items')} />
+            <TextField
+              value={newItemAmount}
+              onChange={handleNewItemAmount}
+              label={t('amount_of_items')}
+            />
           </div>
           <div>
-            <TextField value={newItemPrice} onChange={handleNewItemPrice} label={t('price')} />
+            <TextField
+              value={newItemPrice}
+              onChange={handleNewItemPrice}
+              label={t('price')}
+            />
           </div>
           <div>
             <TextField
               value={newItemPath}
               onChange={handleNewItemPath}
               label={t('image_name')}
-              disabled={(!selectedFile) ? false : true}
+              disabled={!selectedFile ? false : true}
+              className={classes.field}
             />
           </div>
 
           <div>
-            <label htmlFor="files" className={classes.button}>{t('select_image')}</label>
+            <label htmlFor="files" className={classes.inputStyle}>
+              {t('select_image')}
+            </label>
             <InputBase
-              id='files'
+              id="files"
               style={{ visibility: 'hidden' }}
-              type='file'
-              name='image'
+              type="file"
+              name="image"
               onChange={fileSelectedHandler}
             />
           </div>
-
 
           <div>
             <Button
@@ -184,7 +232,6 @@ const AddNewItem = () => {
             </Button>
           </div>
         </form>
-
       </div>
       <br />
 
@@ -194,6 +241,6 @@ const AddNewItem = () => {
       </div> */}
     </>
   );
-}
+};
 
-export default AddNewItem
+export default AddNewItem;
