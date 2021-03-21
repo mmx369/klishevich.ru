@@ -1,6 +1,5 @@
-import blogService from "../services/blog";
-import { NEW_BLOG, INIT_BLOGS, DELETE_BLOG, UPDATED_BLOG } from './types'
-
+import blogService from '../services/blog';
+import { NEW_BLOG, INIT_BLOGS, DELETE_BLOG, UPDATED_BLOG } from './types';
 
 const blogReducer = (state = [], action) => {
   switch (action.type) {
@@ -13,11 +12,11 @@ const blogReducer = (state = [], action) => {
     }
 
     case UPDATED_BLOG: {
-      return action.data
+      return action.data;
     }
 
     case DELETE_BLOG: {
-      return action.data
+      return action.data;
     }
 
     default:
@@ -43,9 +42,9 @@ export const addLike = (id) => {
       const addedLike = {
         ...blogToAddLike,
         likes: blogToAddLike.likes + 1,
-      }
+      };
       await blogService.addLike(id, addedLike);
-      const updatedListOfBlogs = await blogService.getAll()
+      const updatedListOfBlogs = await blogService.getAll();
       dispatch({
         type: UPDATED_BLOG,
         data: updatedListOfBlogs,
@@ -66,7 +65,7 @@ export const addDislike = (id) => {
         likes: blogToAddDislike.likes - 1,
       };
       await blogService.addLike(id, addedDislike);
-      const updatedListOfBlogs = await blogService.getAll()
+      const updatedListOfBlogs = await blogService.getAll();
       dispatch({
         type: UPDATED_BLOG,
         data: updatedListOfBlogs,
@@ -88,10 +87,8 @@ export const addBlog = (blogObject) => {
 
 export const deleteBlog = (id) => {
   return async (dispatch) => {
-    await blogService
-      .deleteBlog(id)
-      .then((response) => response.data);
-    const updatedListOfBlogs = await blogService.getAll()
+    await blogService.deleteBlog(id).then((response) => response.data);
+    const updatedListOfBlogs = await blogService.getAll();
     dispatch({ type: DELETE_BLOG, data: updatedListOfBlogs });
   };
 };

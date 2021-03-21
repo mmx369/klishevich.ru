@@ -12,6 +12,11 @@ const getAll = async () => {
   return response.data;
 };
 
+const getAllCountries = async () => {
+  const response = await axios.get('api/getCountryId');
+  return response.data;
+};
+
 const createNewItem = async (newObject) => {
   const config = {
     headers: { Authorization: token },
@@ -21,6 +26,6 @@ const createNewItem = async (newObject) => {
   return response.data;
 };
 
-const shopService = { createNewItem, getAll, setToken };
+const shopService = { createNewItem, getAll, setToken, getAllCountries };
 
 export default shopService;

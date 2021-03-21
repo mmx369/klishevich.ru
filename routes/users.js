@@ -1,41 +1,48 @@
-const bcrypt = require("bcrypt");
-const usersRouter = require("express").Router();
-const { check, validationResult } = require('express-validator')
-const User = require("../models/users");
+const bcrypt = require('bcrypt');
+const usersRouter = require('express').Router();
+const { check, validationResult } = require('express-validator');
+const User = require('../models/users');
 
 // /api/users/
 
-usersRouter.get("/", async (request, response) => {
+usersRouter.get('/', async (request, response) => {
   const users = await User.find({});
   response.json(users.map((u) => u.toJSON()));
 });
 
-usersRouter.post("/",
+usersRouter.post(
+  '/',
   [
     check('name')
       .trim()
-      .isAlphanumeric().withMessage('Must be letters or numbers only')
-      .isLength({ min: 3 }).withMessage('Must be more then 3 symbols'),
+      .isAlphanumeric()
+      .withMessage('Must be letters or numbers only')
+      .isLength({ min: 3 })
+      .withMessage('Must be more then 3 symbols'),
     check('email', 'Wrong e-mail').trim().normalizeEmail().isEmail(),
     check('password')
       .trim()
-      .matches(/\d/).withMessage('Password must contain a number')
-      .isLength({ min: 6 }).withMessage('Minimum length is 6 symbols')
+      .matches(/\d/)
+      .withMessage('Password must contain a number')
+      .isLength({ min: 6 })
+      .withMessage('Minimum length is 6 symbols'),
   ],
   async (request, response) => {
     try {
-      const errors = validationResult(request)
+      const errors = validationResult(request);
 
       if (!errors.isEmpty()) {
-        return response.status(400).json({ errors: errors.array(), message: 'Wrong registration data' })
+        return response
+          .status(400)
+          .json({ errors: errors.array(), message: 'Wrong registration data' });
       }
-      const { name, email, password } = request.body
+      const { name, email, password } = request.body;
 
       console.log(1111, request.body);
 
-      const candidate = await User.findOne({ email: email })
+      const candidate = await User.findOne({ email: email });
       if (candidate) {
-        return res.status(400).json({ message: `User already exists ` })
+        return res.status(400).json({ message: `User already exists ` });
       }
 
       console.log(2222, candidate);
@@ -52,13 +59,15 @@ usersRouter.post("/",
 
       console.log(3333, user);
 
-      await user.save()
+      await user.save();
 
-      response.status(201).json({ message: 'User created' })
-
+      response.status(201).json({ message: 'User created' });
     } catch (e) {
-      response.status(500).json({ message: 'Something goes wrong, try again', e })
+      response
+        .status(500)
+        .json({ message: 'Something goes wrong, try again', e });
     }
-  })
+  }
+);
 
 module.exports = usersRouter;

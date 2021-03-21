@@ -4,6 +4,15 @@ const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 
+blogsRouter.get('/', async (req, res) => {
+  try {
+    const blogs = await Blog.find({});
+    res.json(blogs.map((blog) => blog.toJSON()));
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 //upload file
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -26,17 +35,8 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({ storage: storage, fileFilter });
 
 blogsRouter.post('/img', upload.single('image'), async (req, res) => {
-  console.log('POST-GOODS!!!', req.file);
   try {
     const { filename, path: filepath, mimetype } = req.file;
-    console.log(
-      'filename:',
-      filename,
-      'filepath:',
-      filepath,
-      'mimetype:',
-      mimetype
-    );
 
     return res.status(201).json({
       message: 'File uploaded successfully',
@@ -47,21 +47,15 @@ blogsRouter.post('/img', upload.single('image'), async (req, res) => {
 });
 // end upload
 
-blogsRouter.get('/', async (request, response) => {
-  // const blogs = await Blog.find({}).skip(1).limit(5)
-  const blogs = await Blog.find({});
-  response.json(blogs.map((blog) => blog.toJSON()));
-});
-
-blogsRouter.post('/', async (request, response) => {
-  const body = request.body;
-  const decodedToken = jwt.verify(response.token, process.env.SECRET);
-  if (!response.token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' });
+blogsRouter.post('/', async (req, res) => {
+  const body = req.body;
+  const decodedToken = jwt.verify(res.token, process.env.SECRET);
+  if (!res.token || !decodedToken.id) {
+    return res.status(401).json({ error: 'token missing or invalid' });
   }
 
   if (decodedToken.name !== 'maximus') {
-    return response
+    return res
       .status(401)
       .json({ error: 'You are not authorized to add new blog' });
   }
@@ -80,19 +74,28 @@ blogsRouter.post('/', async (request, response) => {
 
   const savedBlog = await blog.save();
 
-  response.status(201).json(savedBlog.toJSON());
+  res.status(201).json(savedBlog.toJSON());
 });
 
-blogsRouter.put('/:id', async (request, response) => {
-  const likes = request.body.likes;
+blogsRouter.put('/:id', async (req, res) => {
+  console.log(111, req.body);
+
+  // const body = req.body;
+  // const decodedToken = jwt.verify(res.token, process.env.SECRET);
+
+  // if (!res.token || !decodedToken.id) {
+  //   return res.status(401).json({ error: 'you are not authorized' });
+  // }
+
+  const likes = req.body.likes;
   const updatedObject = await Blog.findByIdAndUpdate(
-    request.params.id,
+    req.params.id,
     {
       likes: likes,
     },
     { new: true }
   );
-  response.status(200).json(updatedObject.toJSON());
+  res.status(200).json(updatedObject.toJSON());
 });
 
 blogsRouter.delete('/:id', async (request, response) => {

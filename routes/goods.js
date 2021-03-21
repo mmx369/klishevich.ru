@@ -75,7 +75,10 @@ goodsRouter.get('/', async (request, response) => {
       console.log(docs);
     }
   );
-  const paperMoneyCategory = countryList.map((el) => el.country);
+  console.log('CountryList: ', countryList);
+  const paperMoneyCategory = countryList.map((el) => el.country).sort();
+  console.log('PaperCategory', paperMoneyCategory);
+
   //make category list PaperMoney - end
 
   //make category list Coin - begin
