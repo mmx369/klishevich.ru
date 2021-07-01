@@ -8,6 +8,8 @@ export const useAuth = () => {
   const [userName, setUserName] = useState(null);
   const [ready, setReady] = useState(false);
 
+  console.log(token, userId, userName, ready);
+
   const login = useCallback((jwtToken, id, name) => {
     setToken(jwtToken);
     setUserId(id);

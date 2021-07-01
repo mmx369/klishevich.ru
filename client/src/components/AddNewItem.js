@@ -1,16 +1,16 @@
-import React, { useState, useContext } from 'react';
-import { TextField, Button } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import shopServices from '../services/shop';
-import { useTranslation } from 'react-i18next';
-import uploadService from '../services/upload';
-import Notification from './Notification';
-import { AuthContext } from '../context/AuthContext';
-import { createNewMsg } from '../reducers/newMsgReducer';
-import { InputBase } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import SelectShop from '../components/SelectShop';
-import { teal } from '@material-ui/core/colors';
+import React, { useState, useContext } from 'react'
+import { TextField, Button } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import shopServices from '../services/shop'
+import { useTranslation } from 'react-i18next'
+import uploadService from '../services/upload'
+import Notification from './Notification'
+import { AuthContext } from '../context/AuthContext'
+import { createNewMsg } from '../reducers/newMsgReducer'
+import { InputBase } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import SelectShop from '../components/SelectShop'
+import { teal } from '@material-ui/core/colors'
 
 const useStyles = makeStyles({
   root: {
@@ -40,23 +40,23 @@ const useStyles = makeStyles({
   field: {
     margin: 0,
   },
-});
+})
 
 const AddNewItem = () => {
-  const [newItemName, setNewItemName] = useState('');
-  const [newItemAmount, setNewItemAmount] = useState('');
-  const [newItemPrice, setNewItemPrice] = useState('');
-  const [newItemPath, setNewItemPath] = useState('');
-  const [country, setCountry] = useState('');
-  const [category, setCategory] = useState('');
-  const dispatch = useDispatch();
-  const classes = useStyles();
+  const [newItemName, setNewItemName] = useState('')
+  const [newItemAmount, setNewItemAmount] = useState('')
+  const [newItemPrice, setNewItemPrice] = useState('')
+  const [newItemPath, setNewItemPath] = useState('')
+  const [country, setCountry] = useState('')
+  const [category, setCategory] = useState('')
+  const dispatch = useDispatch()
+  const classes = useStyles()
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
-  const auth = useContext(AuthContext);
+  const auth = useContext(AuthContext)
 
-  console.log('Auth: ', auth);
+  console.log('Auth: ', auth)
 
   // const input = document.querySelector('#files');
   // const triggerInput = () => input.onChange()
@@ -65,24 +65,24 @@ const AddNewItem = () => {
 
   //upload image - begin-----------
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const fileSelectedHandler = (event) => {
-    console.log(1111, event.target.files[0]);
-    setSelectedFile(event.target.files[0]);
-    setNewItemPath(event.target.files[0].name);
-  };
+    console.log(1111, event.target.files[0])
+    setSelectedFile(event.target.files[0])
+    setNewItemPath(event.target.files[0].name)
+  }
 
   const fileUploadHandler = () => {
     if (!selectedFile) {
-      return null;
+      return null
     }
-    const fd = new FormData();
-    fd.append('image', selectedFile, selectedFile.name);
+    const fd = new FormData()
+    fd.append('image', selectedFile, selectedFile.name)
     uploadService.uploadImageShop(fd).then((res) => {
-      console.log(res);
-    });
-  };
+      console.log(res)
+    })
+  }
 
   //upload image -end-------------
 
@@ -99,28 +99,28 @@ const AddNewItem = () => {
   // }
 
   const handleNewItemName = (event) => {
-    setNewItemName(event.target.value);
-  };
+    setNewItemName(event.target.value)
+  }
 
   const handleNewItemAmount = (event) => {
-    setNewItemAmount(event.target.value);
-  };
+    setNewItemAmount(event.target.value)
+  }
 
   const handleNewItemPrice = (event) => {
-    setNewItemPrice(event.target.value);
-  };
+    setNewItemPrice(event.target.value)
+  }
 
   const handleNewItemPath = (event) => {
     if (selectedFile) {
-      setNewItemPath(selectedFile.name);
+      setNewItemPath(selectedFile.name)
     } else {
-      setNewItemPath(event.target.value);
+      setNewItemPath(event.target.value)
     }
-  };
+  }
 
   const AddNewItem = (event) => {
-    event.preventDefault();
-    fileUploadHandler();
+    event.preventDefault()
+    fileUploadHandler()
 
     const newItem = {
       nameOfGoods: newItemName,
@@ -129,38 +129,38 @@ const AddNewItem = () => {
       imagePath: newItemPath,
       country,
       category,
-    };
+    }
 
-    console.log('newItem; ', newItem);
+    console.log('newItem; ', newItem)
 
-    shopServices.setToken(auth.token);
+    shopServices.setToken(auth.token)
 
     shopServices
       .createNewItem(newItem)
       .then((data) => {
-        console.log(2222, data);
-        setNewItemName('');
-        setNewItemAmount('');
-        setNewItemPrice('');
-        setNewItemPath('');
+        console.log(2222, data)
+        setNewItemName('')
+        setNewItemAmount('')
+        setNewItemPrice('')
+        setNewItemPath('')
         dispatch(
           createNewMsg({
             message: `Item ${newItem.nameOfGoods} added to shop`,
             msgType: 'success',
           })
-        );
+        )
         setTimeout(() => {
-          dispatch(createNewMsg([]));
-        }, 3000);
+          dispatch(createNewMsg([]))
+        }, 3000)
       })
       .catch((e) => {
-        console.error(e);
-        dispatch(createNewMsg({ message: e.message, msgType: 'error' }));
+        console.error(e)
+        dispatch(createNewMsg({ message: e.message, msgType: 'error' }))
         setTimeout(() => {
-          dispatch(createNewMsg([]));
-        }, 3000);
-      });
-  };
+          dispatch(createNewMsg([]))
+        }, 3000)
+      })
+  }
 
   return (
     <>
@@ -240,7 +240,7 @@ const AddNewItem = () => {
         }
       </div> */}
     </>
-  );
-};
+  )
+}
 
-export default AddNewItem;
+export default AddNewItem

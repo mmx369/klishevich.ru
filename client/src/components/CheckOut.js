@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { TextField, Button } from '@material-ui/core'
-import { useTranslation } from 'react-i18next'
-import cartServices from '../services/cart'
-import Select from '../components/Select'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState, useContext } from 'react';
+import { useSelector } from 'react-redux';
+import { TextField, Button } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+import cartServices from '../services/cart';
+import Select from '../components/Select';
+import { makeStyles } from '@material-ui/core/styles';
+import { AuthContext } from '../context/AuthContext';
+import LoginModal from './LoginModal';
 
 const useStyles = makeStyles({
   root: {
@@ -16,27 +18,36 @@ const useStyles = makeStyles({
 
   button: {
     borderRadius: 13,
-    boxShadow: "0 3px 2px 2px",
-    padding: "0 10px",
-    margin: 10
+    boxShadow: '0 3px 2px 2px',
+    padding: '0 10px',
+    margin: 10,
   },
-})
+});
 
 const CheckOut = () => {
+  const { t } = useTranslation();
+  const classes = useStyles();
 
-  const { t } = useTranslation()
-  const classes = useStyles()
+  const { isAuthenticated } = useContext(AuthContext);
+  console.log('checkout page', isAuthenticated);
 
-  const [country, setNewCountry] = useState('')
+  const [country, setNewCountry] = useState('');
   const [form, setForm] = useState({
-    firstName: '', secondName: '', address: '', city: '', state: '', zip: '', phone: ''
-  })
+    firstName: '',
+    secondName: '',
+    address: '',
+    city: '',
+    state: '',
+    zip: '',
+    phone: '',
+  });
 
-  const changeHandler = event => {
-    setForm({ ...form, [event.target.name]: event.target.value })
-  }
+  const changeHandler = (event) => {
+    setForm({ ...form, [event.target.name]: event.target.value });
+  };
 
-  const order = useSelector(state => state.cartR)
+  const order = useSelector((state) => state.cartR);
+  console.log('Order', order);
 
   const makeNewOder = (event) => {
     event.preventDefault();
@@ -44,75 +55,81 @@ const CheckOut = () => {
     const newOrder = {
       order,
       country,
-      ...form
-    }
+      ...form,
+    };
 
-    cartServices.createNewOrder(newOrder).then((data) => console.log('Data: ', data)).catch((e) => console.log('Error: ', e))
+    cartServices
+      .createNewOrder(newOrder)
+      .then((data) => console.log('Data: ', data))
+      .catch((e) => console.log('Error: ', e));
   };
+
+  if (!isAuthenticated) {
+    return (
+      <div className={classes.root}>
+        <LoginModal />
+        11111
+      </div>
+    );
+  }
 
   return (
     <div className={classes.root}>
       <h1 style={{ margin: '0' }}>{t('shipp_address')}</h1>
       <form onSubmit={makeNewOder}>
-
         <Select country={country} setNewCountry={setNewCountry} />
 
         <div>
           <TextField
             onChange={changeHandler}
-            name='firstName'
-            label={t('first_name')} />
+            name="firstName"
+            label={t('first_name')}
+          />
         </div>
         <div>
           <TextField
             onChange={changeHandler}
-            name='secondName'
-            label={t('second_name')} />
+            name="secondName"
+            label={t('second_name')}
+          />
         </div>
         <div>
           <TextField
             onChange={changeHandler}
-            name='address'
-            label={t('address')} />
+            name="address"
+            label={t('address')}
+          />
+        </div>
+        <div>
+          <TextField onChange={changeHandler} name="city" label={t('city')} />
+        </div>
+        <div>
+          <TextField name="state" onChange={changeHandler} label={t('state')} />
         </div>
         <div>
           <TextField
+            name="zip"
             onChange={changeHandler}
-            name='city'
-            label={t('city')} />
+            label={t('zip_code')}
+          />
         </div>
         <div>
-          <TextField
-            name='state'
-            onChange={changeHandler}
-            label={t('state')} />
-        </div>
-        <div>
-          <TextField
-            name='zip'
-            onChange={changeHandler}
-            label={t('zip_code')} />
-        </div>
-        <div>
-          <TextField
-            name='phone'
-            onChange={changeHandler}
-            label={t('phone')} />
+          <TextField name="phone" onChange={changeHandler} label={t('phone')} />
         </div>
         <br />
         <div>
           <Button
             className={classes.button}
-            variant='outlined'
-            color='secondary'
-            type='submit'>
+            variant="outlined"
+            color="secondary"
+            type="submit"
+          >
             {t('finish_order')}
           </Button>
         </div>
       </form>
-
     </div>
-  )
-}
+  );
+};
 
-export default CheckOut
+export default CheckOut;
